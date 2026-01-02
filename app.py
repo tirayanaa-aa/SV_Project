@@ -1,6 +1,6 @@
 import streamlit as st
-import member_C
-import member_D
+member_C.py
+member_D.py
 
 # Page configuration
 st.set_page_config(
