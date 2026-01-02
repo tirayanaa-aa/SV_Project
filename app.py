@@ -1,4 +1,5 @@
 import streamlit as st
+import member_C
 
 # Page configuration
 st.set_page_config(
@@ -18,5 +19,3 @@ if page == "Main Page":
     st.write("This Streamlit dashboard presents a scientific visualization study on students' impulse buying behavior on TikTok Shop.")
 elif page == "Member C":
     member_C.app()
-elif page == "Member D":
-    member_D.app()
