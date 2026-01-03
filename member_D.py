@@ -8,7 +8,7 @@ def app():
        # --------------------------------------------------
     # Load dataset
     # --------------------------------------------------
-    df = pd.read_excel("cleaned_dataset_athirah.xlsx")
+    df = pd.read_excel("tiktok_impulse_buying_cleaned.csv")
 
 
     # =========================
