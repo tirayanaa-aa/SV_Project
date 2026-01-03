@@ -1,5 +1,4 @@
-import streamlit as st 
-import streamlit as st 
+import streamlit as st  
 import Objective1_Aina
 import Objective2_Nurin
 import Objective3_Nadia
