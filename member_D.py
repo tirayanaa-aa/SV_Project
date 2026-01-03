@@ -6,19 +6,6 @@ def app():
     st.subheader("Member D – Impulse Buying Analysis")
 
     # =========================
-    # LOAD DATA
-    # =========================
-    try:
-        df = pd.read_excel("cleaned_dataset.xlsx")
-        st.success("Dataset loaded successfully!")
-    except FileNotFoundError:
-        st.error("Error: 'cleaned_dataset.xlsx' not found. Please upload the file.")
-        return
-
-    st.markdown("### Sample Data")
-    st.dataframe(df.head())
-
-    # =========================
     # 1. SCATTER PLOT + TREND LINE
     # =========================
     st.markdown("### 1️⃣ Relationship Between Product Presentation and Impulse Buying")
