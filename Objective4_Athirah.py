@@ -30,6 +30,41 @@ def app():
     # --------------------------------------------------
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
+    
+    # =========================
+    # SUMMARY METRICS
+    # =========================
+    st.markdown("## 📊 Summary Metrics")
+
+    metric_cols = ['SL_score', 'PP_score', 'OIB_score']
+    missing_cols = [c for c in metric_cols if c not in df.columns]
+
+    if not missing_cols:
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric(
+            label="Average Lifestyle Score (SL)",
+            value=round(df['SL_score'].mean(), 2)
+        )
+
+        col2.metric(
+            label="Average Product Presentation Score (PP)",
+            value=round(df['PP_score'].mean(), 2)
+        )
+
+        col3.metric(
+            label="Average Impulse Buying Score (OIB)",
+            value=round(df['OIB_score'].mean(), 2)
+        )
+
+        st.markdown("### 🔍 Descriptive Statistics")
+        summary_df = df[metric_cols].describe().round(2)
+        st.dataframe(summary_df)
+
+    else:
+        st.warning(f"Missing columns for summary metrics: {missing_cols}")
+
+    
     # =========================
     # 1. SCATTER PLOT + TREND LINE
     # =========================
