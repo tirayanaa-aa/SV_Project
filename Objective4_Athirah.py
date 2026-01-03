@@ -4,7 +4,8 @@ import plotly.express as px
 
 def app():
     st.subheader("Impulse Buying Analysis")
-
+    df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
+    st.write("Your visualizations go here…")
     
     # --------------------------------------------------
     # Load dataset
