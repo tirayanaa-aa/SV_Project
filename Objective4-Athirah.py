@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 def app():
-    st.subheader("Member D – Impulse Buying Analysis")
+    st.subheader("Impulse Buying Analysis")
 
     # ==================================================
     # SUB-OBJECTIVE & CONTEXT
