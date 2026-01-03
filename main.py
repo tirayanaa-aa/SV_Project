@@ -13,6 +13,16 @@ st.set_page_config(
 # --------------------------------------------------
 st.title("📊 Determinants of Students’ Impulse Buying Behavior on TikTok Shop")
 
+st.markdown("""
+### 🧾 Project Snapshot
+- **Domain:** Social Commerce & Consumer Behavior  
+- **Target Group:** University Students  
+- **Platform:** TikTok Shop  
+- **Data Type:** Survey (Likert-scale)  
+- **Analysis Type:** Descriptive & Exploratory Visualization  
+- **Total Sub-Objectives:** 4  
+""")
+
 # --------------------------------------------------
 # Project Overview
 # --------------------------------------------------
@@ -90,6 +100,24 @@ st.markdown("""
 - **Radar Charts** – Visualize multi-dimensional trust and motivation constructs
 """)
 
+st.markdown("---")
+st.subheader("🎨 Dashboard Design Rationale")
+st.markdown("""
+An **interactive dashboard** is chosen instead of static charts to allow
+users to actively explore patterns and relationships in the data.
+
+**Design Considerations:**
+- Interactivity enables filtering by gender and other demographics
+- Multiple coordinated views allow comparison across variables
+- Clean layout minimizes cognitive overload
+- Consistent color usage improves readability and interpretation
+
+**Why Streamlit?**
+- Lightweight and reproducible
+- Suitable for academic visualization projects
+- Enables rapid development of interactive analytics dashboards
+""")
+
 # --------------------------------------------------
 # Methodology Overview
 # --------------------------------------------------
@@ -128,7 +156,14 @@ The dataset was collected through an online questionnaire distributed to univers
 - Calculation of composite scores for key constructs
 """)
 
-st.markdown("---")
+st.markdown(st.markdown("""
+**Dataset Summary:**
+- Total Respondents: **113 students**
+- Total Variables: **XX variables**
+- Likert Scale: **1 (Strongly Disagree) – 5 (Strongly Agree)**
+- Missing Values: **Removed during cleaning**
+""")
+)
 
 # --------------------------------------------------
 # Expected Insights
@@ -147,6 +182,21 @@ in social commerce environments like TikTok Shop.
 """)
 
 # --------------------------------------------------
+# Limitations & Assumptions
+# --------------------------------------------------
+st.subheader("⚠️ Limitations & Assumptions")
+st.markdown("""
+While this project provides valuable insights, several limitations are acknowledged:
+
+- The dataset is based on **self-reported survey responses**
+- Respondents are limited to **students**, not the general population
+- Cross-sectional data prevents causal conclusions
+- Impulse buying behavior is measured via perception, not actual purchase logs
+
+These limitations are considered during interpretation and discussion.
+""")
+
+# --------------------------------------------------
 # Tools & Techniques
 # --------------------------------------------------
 st.subheader("🛠 Tools & Techniques")
@@ -158,6 +208,37 @@ st.markdown("""
 """)
 
 st.markdown("---")
+
+# --------------------------------------------------
+# Project Team & Responsibilities
+# --------------------------------------------------
+st.subheader("👥 Project Team & Responsibilities")
+st.markdown("""
+This project was developed collaboratively, with each member responsible
+for one analytical sub-objective.
+
+- **Member A** – Demographics & TikTok Shop Usage  
+- **Member B** – Scarcity & Product Discovery  
+- **Member C** – Trust, Enjoyment & Motivation  
+- **Member D** – Product Presentation & Shopping Lifestyle  
+
+Each section applies appropriate visualization techniques to answer
+its assigned research objective.
+""")
+
+st.markdown("---")
+st.subheader("🧑‍💻 How to Use This Dashboard")
+st.markdown("""
+To explore the findings effectively:
+
+1. Use the **sidebar navigation** to switch between analysis sections
+2. Apply **filters** (e.g., gender) where available to refine insights
+3. Hover over charts to view exact values and details
+4. Read the **interpretation text** below each visualization for guidance
+
+Each chart is designed to answer a specific research question
+and should be interpreted in context.
+""")
 
 # --------------------------------------------------
 # Dashboard Structure & Navigation
