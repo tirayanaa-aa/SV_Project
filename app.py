@@ -1,6 +1,6 @@
-import streamlit as st
-import Objective3_Nadia   # file member C
-import Objective4_Athirah  # file member D
+import streamlit as st 
+import streamlit as st 
+import member_D # ✅ import member_D supaya boleh dipanggil
 
 # Page configuration
 st.set_page_config(
@@ -13,22 +13,18 @@ st.title("📊 Determinants of Students' Impulse Buying Behavior on TikTok Shop"
 # Sidebar for page navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
-    "Go to page:", 
-    [
-        "Main Page", 
-        "Objective 3 – Nadia", 
-        "Objective 4 – Athirah"
-    ]
+    "Go to page:",
+    ["Main Page", "Member A", "Member B", "Member C", "Member D"]
 )
 
 # Load member pages
 if page == "Main Page":
     st.subheader("Project Overview")
     st.write(
-        "This Streamlit dashboard presents a scientific visualization study on "
-        "students' impulse buying behavior on TikTok Shop."
+    "This Streamlit dashboard presents a scientific visualization study on "
+    "students' impulse buying behavior on TikTok Shop."
     )
-elif page == "Objective 3 – Nadia":
-    Objective3_Nadia.app()   # panggil function app() dari file Objective3_Nadia.py
-elif page == "Objective 4 – Athirah":
-    Objective4_Athirah.app()  # panggil function app() dari file Objective4_Athirah.py
+elif page == "Member C":
+    member_C.app()
+elif page == "Member D":
+    member_D.app() # ✅ panggil function app() dari member_D
