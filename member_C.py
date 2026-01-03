@@ -22,7 +22,7 @@ def app():
     # --------------------------------------------------
     # Load dataset
     # --------------------------------------------------
-    df = pd.read_excel("cleaned_dataset_nadia.xlsx")
+    df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
     # --------------------------------------------------
     # Define factor groups
