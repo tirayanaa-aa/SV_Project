@@ -217,10 +217,10 @@ st.markdown("""
 This project was developed collaboratively, with each member responsible
 for one analytical sub-objective.
 
-- **Member A** – Demographics & TikTok Shop Usage  
-- **Member B** – Scarcity & Product Discovery  
-- **Member C** – Trust, Enjoyment & Motivation  
-- **Member D** – Product Presentation & Shopping Lifestyle  
+- **Aina** – Demographics & TikTok Shop Usage  
+- **Nurin** – Scarcity & Product Discovery  
+- **Nadia** – Trust, Enjoyment & Motivation  
+- **Athirah** – Product Presentation & Shopping Lifestyle  
 
 Each section applies appropriate visualization techniques to answer
 its assigned research objective.
