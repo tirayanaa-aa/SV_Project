@@ -70,6 +70,11 @@ def app():
     )
     st.plotly_chart(fig3, use_container_width=True)
 
+     st.write("""
+    **Interpretation:**  
+   The bar chart reveals that the 22–26 years old age group has the highest TikTok Shop usage, with a count of approximately 80 respondents. In contrast, usage is significantly lower among the 17–21 and 27–31 age groups, indicating that the platform's shopping features are most popular among young adults in their mid-twenties.
+    """)
+
     # 4. Faculty Distribution
     st.subheader("Distribution by Faculty")
     faculty_counts = df['faculty'].value_counts().reset_index()
