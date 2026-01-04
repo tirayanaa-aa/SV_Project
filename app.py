@@ -1,38 +1,48 @@
 import streamlit as st
 
+# --------------------------------------------------
+# Page Configuration
+# --------------------------------------------------
 st.set_page_config(
     page_title="TikTok Shop Impulse Buying Visualization",
     layout="wide"
 )
 
-st.sidebar.title("Navigation")
+# --------------------------------------------------
+# Sidebar Navigation
+# --------------------------------------------------
+st.sidebar.title("📂 Navigation")
 
-page = st.sidebar.selectbox(
-    "Go to page:",
-    [
+page_selection = st.sidebar.radio(
+    "Select Page:",
+    options=[
         "Main Page",
-        "Objective1_Aina",
-        "Objective2_Nurin",
-        "Objective3_Nadia",
-        "Objective4_Athirah"
+        "Objective 1 - Aina",
+        "Objective 2 - Nurin",
+        "Objective 3 - Nadia",
+        "Objective 4 - Athirah"
     ]
 )
 
-if page == "Main Page":
+# --------------------------------------------------
+# Page Import & Display Logic
+# --------------------------------------------------
+if page_selection == "Main Page":
     import main
+    main.app()  # Make sure main.py has an app() function
 
-elif page == "Objective1_Aina":
+elif page_selection == "Objective 1 - Aina":
     import Objective1_Aina
     Objective1_Aina.app()
 
-elif page == "Objective2_Nurin":
+elif page_selection == "Objective 2 - Nurin":
     import Objective2_Nurin
     Objective2_Nurin.app()
 
-elif page == "Objective3_Nadia":
+elif page_selection == "Objective 3 - Nadia":
     import Objective3_Nadia
     Objective3_Nadia.app()
 
-elif page == "Objective4_Athirah":
+elif page_selection == "Objective 4 - Athirah":
     import Objective4_Athirah
     Objective4_Athirah.app()
