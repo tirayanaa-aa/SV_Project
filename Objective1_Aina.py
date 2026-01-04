@@ -37,9 +37,11 @@ def app():
     # SAYA TELAH BETULKAN KURUNGAN DI SINI )
     st.plotly_chart(fig1, use_container_width=True)
     
- st.success("""This pattern clearly shows that for many individuals, drug use begins as a form of self-medication to deal with existing emotional problems, demonstrating untreated psychological vulnerabilities.""")
-
-st.markdown("---")
+    st.write("""
+    **Interpretation:**  
+    The correlation heatmap supports the finding that trust-related factors such as reliability, honesty, and product quality are positively associated with motivation factors such as discounts and gifts.
+    This indicates that higher trust increases shopping motivation on TikTok Shop.
+    """)
 
     
     # 2. Age Group Histogram
