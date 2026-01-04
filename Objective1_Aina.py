@@ -2,6 +2,30 @@ import plotly.express as px
 import streamlit as st
 import pandas as pd
 
+
+st.set_page_config(page_title="TikTok Shop Analysis", layout="wide")
+
+
+def app():
+    # --- Page Header ---
+    st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
+    
+    # --- Problem Statement Section ---
+    st.subheader("Problem Statement")
+    st.info("""
+    E-commerce platforms like TikTok Shop serve users from diverse demographic backgrounds. 
+    However, limited understanding of how factors such as gender, age group, faculty, 
+    and income relate to TikTok Shop usage may reduce the effectiveness of targeted 
+    marketing strategies and user experience optimization.
+    """)
+
+    # --- Load Dataset ---
+    # Ensuring the dataframe is loaded within the page function
+    try:
+        df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
+        
+
+
 # 1. Prepare the data
 gender_counts = df['gender'].value_counts().reset_index()
 gender_counts.columns = ['gender', 'count']
