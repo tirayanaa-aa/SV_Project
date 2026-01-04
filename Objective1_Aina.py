@@ -34,19 +34,7 @@ def app():
         title='Distribution of Gender',
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
-    st.plotly_chart(fig1, use_container_width=True)
-
-    st.write("""
-    E-commerce platforms such as TikTok Shop serve users from diverse demographic backgrounds. 
-    However, limited understanding of how factors such as gender, age group, faculty, and income 
-    relate to TikTok Shop usage may reduce the effectiveness of targeted marketing strategies.
-    """)
-
-     # --------------------------------------------------
-    # Load dataset
-    # --------------------------------------------------
-    # Ensure this CSV file is in the same folder on GitHub
-    df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
+    st.plotly_chart(fig1, use_container_width=True
 
     
     # 2. Age Group Histogram
