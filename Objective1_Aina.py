@@ -97,6 +97,12 @@ def app():
     )
     st.plotly_chart(fig4, use_container_width=True)
 
+    st.write("""
+    **Interpretation:**  
+   The data shows that TikTok Shop usage is predominantly driven by the 22–26 years old age group and students from the FSDK faculty. Most of these users fall into the lower income category of Under RM100, with participation rates declining as age and income levels increase.
+    """)
+
+
 
 
 
