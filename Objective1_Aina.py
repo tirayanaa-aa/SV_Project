@@ -34,7 +34,7 @@ def app():
         title='Distribution of Gender',
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
-    st.plotly_chart(fig1, use_container_width=True
+    st.plotly_chart(fig1, use_container_width=True)
     
     # ADD INTERPRETATION HERE
     st.write("**Interpretation:** The pie chart reveals that the respondent pool is dominated by [Gender], representing [Percentage]% of the total. This suggests that marketing efforts should be tailored toward this specific demographic.")
