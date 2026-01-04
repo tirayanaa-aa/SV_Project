@@ -203,6 +203,5 @@ def app():
 
         st.write("""
         **Interpretation:**  
-        The radar chart shows that trust dimensions are relatively balanced, with slightly higher scores for reliability and product quality, highlighting
-        their importance in shaping overall trust.
+        The radar chart shows that trust dimensions are relatively balanced, with slightly higher scores for reliability and product quality, highlighting their importance in shaping overall trust.
         """)
