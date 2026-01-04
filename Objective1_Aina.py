@@ -102,6 +102,36 @@ def app():
     """)
 
 
+# 5. TikTok Shop Experience by Gender
+    st.subheader("TikTok Shop Experience by Gender")
+    
+    # Create the crosstab and reset index for Plotly
+    crosstab_df = pd.crosstab(df['gender'], df['tiktok_shop_experience']).reset_index()
+
+    # Create the Stacked Bar Chart
+    fig5 = px.bar(
+        crosstab_df, 
+        x='gender', 
+        y=crosstab_df.columns[1:], # Selects experience categories (e.g., Yes/No)
+        title='TikTok Shop Experience by Gender (Stacked Bar Chart)',
+        labels={'gender': 'Gender', 'value': 'Count', 'variable': 'Experience'},
+        color_discrete_sequence=px.colors.sequential.Viridis,
+        barmode='stack'
+    )
+    
+    # Improve layout for Streamlit
+    fig5.update_layout(
+        xaxis_title="Gender",
+        yaxis_title="Number of Respondents",
+        legend_title="Experience",
+        hovermode="x unified"
+    )
+    
+    st.plotly_chart(fig5, use_container_width=True)
+
+    st.write("""
+    **Interpretation:** The stacked bar chart illustrates the distribution of TikTok Shop experience across genders. It allows us to see not only which gender has the highest representation in the dataset but also the proportion of users within each gender who have utilized TikTok Shop features, helping identify if a gender-based gap exists in platform adoption.
+    """)
 
 
 
