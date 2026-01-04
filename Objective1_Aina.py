@@ -1,7 +1,6 @@
 import plotly.express as px
 import streamlit as st
 import pandas as pd
-
 def app():
     st.header(
         "Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage"
