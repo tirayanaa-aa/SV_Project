@@ -137,6 +137,39 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 
+import plotly.express as px
+import streamlit as st
+import pandas as pd
+
+# 1. Create the crosstab and reset the index
+# Plotly Express works best when the category ('gender') is a column, not just the index
+crosstab_df = pd.crosstab(df['gender'], df['tiktok_shop_experience']).reset_index()
+
+# 2. Create the Stacked Bar Chart
+# We use the columns (Yes/No or similar) as the 'y' values
+fig = px.bar(
+    crosstab_df, 
+    x='gender', 
+    y=crosstab_df.columns[1:], # Automatically picks up all experience categories
+    title='TikTok Shop Experience by Gender (Stacked Bar Chart)',
+    labels={'gender': 'Gender', 'value': 'Count', 'variable': 'Experience'},
+    color_discrete_sequence=px.colors.sequential.Viridis,
+    barmode='stack'            # This ensures bars are stacked
+)
+
+# 3. Refine the look
+fig.update_layout(
+    xaxis_title="Gender",
+    yaxis_title="Count",
+    legend_title="TikTok Shop Experience",
+    hovermode="x unified"      # Shows all stack values in one tooltip when hovering
+)
+
+# 4. Display in Streamlit
+st.plotly_chart(fig, use_container_width=True)
+
+
+
 
 
 
