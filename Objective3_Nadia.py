@@ -75,15 +75,18 @@ def app():
     else:
         st.warning(f"Missing columns for summary metrics: {missing_cols}")
 
-
+    
     # --------------------------------------------------
     # 1️⃣ Correlation Heatmap
     # --------------------------------------------------
     st.markdown("### 1️⃣ Correlation Between Trust & Motivation Items")
+    
     corr_items = trust_items + motivation_items
     missing_corr = [c for c in corr_items if c not in df.columns]
+    
     if not missing_corr:
         corr = df[corr_items].corr()
+    
         fig1 = px.imshow(
             corr,
             text_auto='.2f',
@@ -93,34 +96,50 @@ def app():
             title='Correlation Matrix of Trust & Motivation Items'
         )
         st.plotly_chart(fig1, use_container_width=True)
+    
+        # ✅ Interpretation should be HERE
+        st.write("""
+        **Interpretation:**  
+        The correlation heatmap supports the finding that trust-related factors such as reliability,
+        honesty, and product quality are positively associated with motivation factors such as
+        discounts and gifts. This indicates that higher trust increases shopping motivation
+        on TikTok Shop.
+        """)
+    
     else:
         st.warning(f"Missing columns for correlation: {missing_corr}")
 
-        st.write("""
-        **Interpretation:**  
-        The correlation heatmap supports the finding that trust-related factors such as reliability, honesty, and product quality are positively associated with motivation factors such as discounts and gifts.
-        This indicates that higher trust increases shopping motivation on TikTok Shop.
-        """)
 
     # --------------------------------------------------
     # 2️⃣ Bar Chart – Trust Items
     # --------------------------------------------------
     st.markdown("### 2️⃣ Average Trust Scores by Item")
+    
     missing_trust = [c for c in trust_items if c not in df.columns]
+    
     if not missing_trust:
         trust_means = df[trust_items].mean().reset_index()
         trust_means.columns = ['Trust Item', 'Mean Score']
-        fig2 = px.bar(trust_means, x='Trust Item', y='Mean Score', title="Average Trust Scores")
+    
+        fig2 = px.bar(
+            trust_means,
+            x='Trust Item',
+            y='Mean Score',
+            title="Average Trust Scores"
+        )
         st.plotly_chart(fig2, use_container_width=True)
-    else:
-        st.warning(f"Missing trust columns: {missing_trust}")
-        
+    
+        # ✅ Interpretation placed correctly
         st.write("""
         **Interpretation:**  
         This bar chart compares the average trust scores across different trust dimensions.
         The results show that product variety and reliability receive the highest trust ratings,
         indicating these aspects are most important to respondents.
         """)
+    
+    else:
+        st.warning(f"Missing trust columns: {missing_trust}")
+
         
     # --------------------------------------------------
     # 3️⃣ Box Plot – Trust Responses
