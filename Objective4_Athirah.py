@@ -283,5 +283,29 @@ def app():
             yaxis_title='Score (1 = Strongly Disagree, 5 = Strongly Agree)'
         )
         st.plotly_chart(fig5, use_container_width=True)
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #10b981;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+           <li>The box plot shows that the median scores for all factors are around level 3 to 4, indicating moderate to high agreement among respondents.</li>
+           <li><em>Brand trust influence</em> and <em>unique design attraction</em> exhibit relatively consistent distributions, suggesting these factors are commonly perceived as important.</li>
+           <li><em>New product urgency</em> shows a wider spread, indicating varying levels of influence across respondents.</li>
+           <li>Several low-score outliers are observed, suggesting that a small group of students is less affected by brand-related attraction factors.</li>
+           <li>Overall, the visualization indicates that product attraction and trust play a meaningful role in shaping impulse buying behaviour on TikTok Shop.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
     else:
         st.warning(f"Missing box plot columns: {missing_cols}")
