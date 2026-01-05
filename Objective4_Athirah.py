@@ -10,9 +10,7 @@ def app():
     # SUB-OBJECTIVE & CONTEXT
     # ==================================================
     st.markdown("""
-    ## 📌 Sub-Objective 4: Analyze Product Presentation, Lifestyle Factors, and Impulse Buying Behavior
-
-    ### 🎯 Sub-Objective
+    ## Sub-Objective 4: Analyze Product Presentation, Lifestyle Factors, and Impulse Buying Behavior
     To analyze how product appearance, personal shopping lifestyle, and impulse buying tendencies influence spontaneous purchasing behavior on TikTok Shop.
 
     ### Problem Statement
