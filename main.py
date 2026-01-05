@@ -250,16 +250,16 @@ The dashboard is organized by **research sub-objectives**, ensuring clarity and 
 - **Main Page**  
   - Project background, objectives, and methodology  
 
-- **Member A – Demographics & Usage**  
+- **Aina – Demographics & Usage**  
   - Respondent profile and TikTok Shop usage patterns  
 
-- **Member B – Scarcity & Discovery**  
+- **Nurin – Scarcity & Discovery**  
   - Impact of limited offers and unexpected product exposure  
 
-- **Member C – Trust & Motivation**  
+- **Nadia – Trust & Motivation**  
   - Psychological drivers of impulse buying  
 
-- **Member D – Presentation & Lifestyle**  
+- **Athirah – Presentation & Lifestyle**  
   - Visual presentation and shopping habits  
 
 📌 Please use the sidebar on the left to explore the analysis pages.
