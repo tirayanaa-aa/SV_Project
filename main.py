@@ -8,11 +8,10 @@ def app():
         page_title="TikTok Shop Impulse Buying Visualization",
         layout="wide"
     )
+    
+    st.title("📊 Determinants of Students’ Impulse Buying Behavior on TikTok Shop")
 
-# --------------------------------------------------
-# Title
-# --------------------------------------------------
-st.title("📊 Determinants of Students’ Impulse Buying Behavior on TikTok Shop")
+app()
 
 st.markdown("""
 ### 🧾 Project Snapshot
