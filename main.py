@@ -289,6 +289,3 @@ st.info("""
 This project is conducted for educational purposes only.  
 All data is anonymized and analyzed ethically to support learning in data visualization.
 """)
-
-if __name__ == "__main__":
-    app()
