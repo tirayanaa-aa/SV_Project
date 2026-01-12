@@ -247,7 +247,7 @@ def app():
     - **Aina – Demographics & Usage**  
       - Respondent profile and TikTok Shop usage patterns  
 
-    - **Nurin – Scarcity & Discovery**  
+    - **Nurin – Scarcity & Serendipity**  
       - Impact of limited offers and unexpected product exposure  
 
     - **Nadia – Trust & Motivation**  
