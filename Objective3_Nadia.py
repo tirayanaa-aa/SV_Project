@@ -61,21 +61,40 @@ def app():
      # 🔧 SAFETY: remove missing values (important)
     df = df.dropna(subset=['Trust_Score', 'Motivation_Score'])
 
-
+    
     # ==================================================
     # SUMMARY METRICS
     # ==================================================
     st.markdown("## 📊 Summary Metrics")
+    
     metric_cols = ['Trust_Score', 'Motivation_Score']
     missing_cols = [c for c in metric_cols if c not in df.columns]
-
+    
     if not missing_cols:
         col1, col2 = st.columns(2)
-        col1.metric("Average Trust Score", round(df['Trust_Score'].mean(), 2))
-        col2.metric("Average Motivation Score", round(df['Motivation_Score'].mean(), 2))
-
+    
+        # Trust Score Metric
+        col1.metric(
+            label="Average Trust Score",
+            value=f"{df['Trust_Score'].mean():.2f}",
+            delta=f"{df['Trust_Score'].max() - df['Trust_Score'].min():.2f} range"
+        )
+    
+        # Motivation Score Metric
+        col2.metric(
+            label="Average Motivation Score",
+            value=f"{df['Motivation_Score'].mean():.2f}",
+            delta=f"{df['Motivation_Score'].max() - df['Motivation_Score'].min():.2f} range"
+        )
+    
+        # Descriptive statistics table
         st.markdown("### 🔍 Descriptive Statistics")
-        st.dataframe(df[metric_cols].describe().round(2))
+        summary_df = df[metric_cols].describe().round(2)
+    
+        # Style dataframe (same visual standard)
+        styled_df = summary_df.style.background_gradient(cmap='Blues', axis=1)
+        st.dataframe(styled_df, height=220)
+    
     else:
         st.warning(f"Missing columns for summary metrics: {missing_cols}")
 
