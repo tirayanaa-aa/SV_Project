@@ -97,7 +97,7 @@ def app():
         )
         st.plotly_chart(fig1, use_container_width=True)
 
-         # -------------------------
+        # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
         st.markdown("""
@@ -112,23 +112,13 @@ def app():
         <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
 
         <ul style="margin-left:15px;">
-            <li>Trust-related items show moderate to strong poisitive correlations among themselves, which particularly between honesty and quality matching the product description.</li>
+            <li>Trust-related items show moderate to strong positive correlations among themselves, which particularly between honesty and quality matching the product description.</li>
             <li>Motivation factors such as discounts and gifts are also strongly correlated with each other, indicating consistent promotional influence.</li>
             <li>Several trust items will demonstrate the moderate postive relationships with motivation variables, that will suggesting that the higher trust is associated with increased shopping motivation.</li>
             <li>However, the correlarions between trust and motivation are generally weaker than those within each construct, indicating that trust supports motivation rathen than directly driving it.</li>
         </ul>
         </div>
          """, unsafe_allow_html=True)
-        
-        # ✅ Interpretation should be HERE
-        st.write("""
-        **Interpretation:**  
-        The correlation heatmap supports the finding that trust-related factors such as reliability,
-        honesty, and product quality are positively associated with motivation factors such as
-        discounts and gifts. This indicates that higher trust increases shopping motivation
-        on TikTok Shop.
-        """)
-    
     else:
         st.warning(f"Missing columns for correlation: {missing_corr}")
 
@@ -173,12 +163,28 @@ def app():
         fig3 = px.box(trust_long, x='Trust Item', y='Response', points='all', title='Trust Item Response Distribution')
         st.plotly_chart(fig3, use_container_width=True)
 
-        st.write("""
-        **Interpretation:**  
-        The box plot shows variation in trust responses across different trust items.
-        Some items have wider ranges, indicating mixed opinions, while others show more consistent responses. 
-        This visualization highlights variability, medians, and outliers that cannot be observed using mean values alone.
-        """)
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #6366f1;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+            <li>Most trust items have median responses between 3 and 4, indicating an overall positive level of trust among respondents.</li>
+            <li>The iteam related to product variety meeting needs shows a slightly higher median and wider spread, suggesting varied but generally favourable perceptions.</li>
+            <li>Trust in seller honesty and product description accuracy demostrates relatively consistent responses, with fewer extreme values.</li>
+            <li>Overall, the distribution indicate that respondents tend to agree with trust statements, although some variation exists across different trust dimensions.</li>
+        </ul>
+        </div>
+         """, unsafe_allow_html=True)
 
     # --------------------------------------------------
     # 4️⃣ Bar Chart – Motivation Items
@@ -190,6 +196,29 @@ def app():
         mot_means.columns = ['Motivation Item', 'Mean Score']
         fig4 = px.bar(mot_means, x='Motivation Item', y='Mean Score', title="Average Motivation Scores")
         st.plotly_chart(fig4, use_container_width=True)
+
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #6366f1;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+            <li>Trust-related items show moderate to strong positive correlations among themselves, which particularly between honesty and quality matching the product description.</li>
+            <li>Motivation factors such as discounts and gifts are also strongly correlated with each other, indicating consistent promotional influence.</li>
+            <li>Several trust items will demonstrate the moderate postive relationships with motivation variables, that will suggesting that the higher trust is associated with increased shopping motivation.</li>
+            <li>However, the correlarions between trust and motivation are generally weaker than those within each construct, indicating that trust supports motivation rathen than directly driving it.</li>
+        </ul>
+        </div>
+         """, unsafe_allow_html=True)
 
         st.write("""
         **Interpretation:**  
@@ -219,12 +248,28 @@ def app():
         fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line', line=dict(width=3))
         st.plotly_chart(fig5, use_container_width=True)
 
-        st.write("""
-        **Interpretation:**  
-        The scatter plot shows a positive relationship between trust and shopping motivation.
-        As trust increases, motivation also increases, supporting the importance of trust
-        as a psychological driver of impulse buying behavior.
-        """)
+         # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #6366f1;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+            <li>The scatter plot shows a clear positive relationship between trust score and motivation score, as the higher levels are generally associated with the higher shopping motivation.</li>
+            <li>The upward-sloping trend line indicates that the motivation tends to increase steadily as trust improves.</li>
+            <li>Although some variation exists at similat trust levels, the overall pattern will remains the consistent across the data points.</li>
+            <li>This suggests that trust will plays a supportive role in enhancing the consumers' motivation to shop on this platform.</li>
+        </ul>
+        </div>
+         """, unsafe_allow_html=True)
 
     
     # --------------------------------------------------
@@ -242,6 +287,29 @@ def app():
         ax.fill(angles, values, alpha=0.25)
         ax.set_thetagrids(angles[:-1] * 180/np.pi, labels)
         st.pyplot(fig6)
+
+         # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #6366f1;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+            <li>Most trust items have median responses between 3 and 4, indicating an overall positive level of trust among respondents.</li>
+            <li>The iteam related to product variety meeting needs shows a slightly higher median and wider spread, suggesting varied but generally favourable perceptions.</li>
+            <li>Trust in seller honesty and product description accuracy demostrates relatively consistent responses, with fewer extreme values.</li>
+            <li>Overall, the distribution indicate that respondents tend to agree with trust statements, although some variation exists across different trust dimensions.</li>
+        </ul>
+        </div>
+         """, unsafe_allow_html=True)
 
         st.write("""
         **Interpretation:**  
