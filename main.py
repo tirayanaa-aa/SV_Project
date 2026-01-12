@@ -283,6 +283,3 @@ def app():
     All data is anonymized and analyzed ethically to support learning in data visualization.
     """)
 
-
-# Run app
-app()
