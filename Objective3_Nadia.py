@@ -96,7 +96,30 @@ def app():
             title='Correlation Matrix of Trust & Motivation Items'
         )
         st.plotly_chart(fig1, use_container_width=True)
-    
+
+         # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        st.markdown("""
+        <div style="
+            background-color:#f8fafc;
+            padding:16px;
+            border-left:6px solid #6366f1;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.05);
+            margin-top:10px;
+        ">
+        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+
+        <ul style="margin-left:15px;">
+            <li>Trust-related items show moderate to strong poisitive correlations among themselves, which particularly between honesty and quality matching the product description.</li>
+            <li>Motivation factors such as discounts and gifts are also strongly correlated with each other, indicating consistent promotional influence.</li>
+            <li>Several trust items will demonstrate the moderate postive relationships with motivation variables, that will suggesting that the higher trust is associated with increased shopping motivation.</li>
+            <li>However, the correlarions between trust and motivation are generally weaker than those within each construct, indicating that trust supports motivation rathen than directly driving it.</li>
+        </ul>
+        </div>
+         """, unsafe_allow_html=True)
+        
         # ✅ Interpretation should be HERE
         st.write("""
         **Interpretation:**  
