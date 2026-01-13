@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import numpy as np
 
 def app():
@@ -322,26 +323,39 @@ def app():
     # 6️⃣ RADAR CHART - INTERACTIVE
     # ==================================================
     if viz_option == "Trust Radar Chart":
-        labels = selected_trust_items
-        values = df[selected_trust_items].mean().tolist()
-        values += values[:1]  # complete loop
-        angles = np.linspace(0, 2 * np.pi, len(labels)+1)
-    
-        fig6, ax = plt.subplots(figsize=(5,5), subplot_kw=dict(polar=True))
-        ax.plot(angles, values, linewidth=2)
-        ax.fill(angles, values, alpha=0.25)
-        ax.set_thetagrids(angles[:-1] * 180/np.pi, labels)
-        st.pyplot(fig6)
-    
-        # -------------------------
-        # INTERPRETATION / INSIGHTS
-        # -------------------------
-        with st.expander("📌 Key Insights - Trust Radar Chart"):
-            st.markdown("""
-            <ul style="margin-left:15px;">
-                <li>Overall, trust levels are strong across all dimensions, with no area showing serious weakness.</li>
-                <li>Customers feel most confident that product variety meets their needs and quality matches the description, showing expectations are largely met.</li>
-                <li>Trust in honesty and reliability is high, reflecting positive perceptions of seller integrity.</li>
-                <li>The slightly lower score on "no risk" suggests some customers may still feel cautious, leaving room to strengthen reassurance and transparency.</li>
-            </ul>
-            """, unsafe_allow_html=True)
+    labels = selected_trust_items
+    values = df[selected_trust_items].mean().tolist()
+    values += values[:1]  # close the loop
+
+    fig6 = go.Figure(
+        data=go.Scatterpolar(
+            r=values,
+            theta=labels + [labels[0]],  # complete loop for radar
+            fill='toself',
+            name='Trust Levels',
+            line=dict(color='blue')
+        )
+    )
+
+    fig6.update_layout(
+        polar=dict(
+            radialaxis=dict(visible=True, range=[0,5])
+        ),
+        showlegend=False,
+        title="Trust Radar Chart"
+    )
+
+    st.plotly_chart(fig6, use_container_width=True)
+
+    # -------------------------
+    # INTERPRETATION / INSIGHTS
+    # -------------------------
+    with st.expander("📌 Key Insights - Trust Radar Chart"):
+        st.markdown("""
+        <ul style="margin-left:15px;">
+            <li>Overall, trust levels are strong across all dimensions, with no area showing serious weakness.</li>
+            <li>Customers feel most confident that product variety meets their needs and quality matches the description, showing expectations are largely met.</li>
+            <li>Trust in honesty and reliability is high, reflecting positive perceptions of seller integrity.</li>
+            <li>The slightly lower score on "no risk" suggests some customers may still feel cautious, leaving room to strengthen reassurance and transparency.</li>
+        </ul>
+        """, unsafe_allow_html=True)
