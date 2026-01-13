@@ -104,7 +104,7 @@ def app():
     st.plotly_chart(fig3, use_container_width=True)
 
     top_income = df['monthly_income'].value_counts().idxmax()
-    st.info(f"**Interpretation:** The majority of the total respondents fall into the **{top_income}** income category, indicating a specific economic profile for the platform's user base.")
+    st.info(f"**Interpretation:**👩‍💻 The majority of the total respondents fall into the **{top_income}** income category, indicating a specific economic profile for the platform's user base.")
 
     # --------------------------------------------------
     # 4. Faculty Distribution (Independent)
@@ -123,7 +123,7 @@ def app():
     st.plotly_chart(fig4, use_container_width=True)
     
     top_faculty = faculty_counts.iloc[-1]['faculty']
-    st.info(f"**Interpretation:** The data indicates that the highest participation comes from the **{top_faculty}** faculty, followed by other academic departments.")
+    st.info(f"**Interpretation:** 👩‍💻The data indicates that the highest participation comes from the **{top_faculty}** faculty, followed by other academic departments.")
 
     # --------------------------------------------------
     # 5. TikTok Shop Experience by Gender (Independent)
@@ -140,7 +140,7 @@ def app():
     )
     st.plotly_chart(fig5, use_container_width=True)
 
-    st.info("**Interpretation:** The stacked bar chart reveals the distribution of platform adoption across genders, helping identify if a usage gap exists between male and female respondents.")
+    st.info("**Interpretation:** 👩‍💻The stacked bar chart reveals the distribution of platform adoption across genders, helping identify if a usage gap exists between male and female respondents.")
 
 # Execute the app
 if __name__ == "__main__":
