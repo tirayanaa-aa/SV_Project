@@ -41,7 +41,7 @@ def app():
         filtered_df = filtered_df[filtered_df['faculty'] == selected_faculty]
     
     if selected_age != "All":
-        filtered_df = filtered_df[filtered_df['age_group'] == selected_age]
+        filtered_df = filtered_df[filtered_df['age'] == selected_age]
 
     # --------------------------------------------------
     # 1. Gender Pie Chart
