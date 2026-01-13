@@ -4,9 +4,6 @@ import pandas as pd
 
 
 
-import streamlit as st
-import pandas as pd
-import plotly.express as px
 
 def app():
     st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
@@ -73,7 +70,7 @@ def app():
         # Dynamic Interpretation
         top_gender = gender_counts.iloc[0][gender_col]
         percentage = (gender_counts.iloc[0]['count'] / len(pie_df)) * 100
-        st.info(f"**Interpretation:** For the **{selected_age}** group, the population is dominated by **{top_gender}s** ({percentage:.1f}%).")
+        st.info(f"**Interpretation:** 👩‍💻 For the **{selected_age}** group, the population is dominated by **{top_gender}s** ({percentage:.1f}%).")
 
     # --------------------------------------------------
     # 2. AGE GROUP HISTOGRAM (Independent)
@@ -90,7 +87,7 @@ def app():
     )
     st.plotly_chart(fig2, use_container_width=True)
     
-    st.info("**Interpretation:** The histogram shows that the 22–26 years old group has the highest engagement. This provides a baseline comparison against the filtered gender data above.")
+    st.info("**Interpretation:** 👩‍💻 The histogram shows that the 22–26 years old group has the highest engagement. This provides a baseline comparison against the filtered gender data above.")
 
     # --------------------------------------------------
     # 3. Monthly Income Distribution (Independent)
