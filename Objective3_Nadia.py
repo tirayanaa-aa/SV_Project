@@ -185,6 +185,30 @@ def app():
                 st.markdown("**Strong correlations (>|0.7|):**")
                 st.dataframe(strong_corr)
 
+
+            # -------------------------
+            # INTERPRETATION / INSIGHTS
+            # -------------------------
+            st.markdown("""
+            <div style="
+                background-color:#f8fafc;
+                padding:16px;
+                border-left:6px solid #6366f1;
+                border-radius:10px;
+                box-shadow:0 2px 6px rgba(0,0,0,0.05);
+                margin-top:10px;
+            ">
+            <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
+            <ul style="margin-left:15px;">
+                <li>Trust-related items show moderate to strong positive correlations among themselves, particularly between honesty and quality matching the product description.</li>
+                <li>Motivation factors such as discounts and gifts are also strongly correlated, showing consistent promotional influence.</li>
+                <li>Some trust items show moderate positive relationships with motivation variables, suggesting that higher trust is associated with increased shopping motivation.</li>
+                <li>Correlations between trust and motivation are generally weaker than within each construct, indicating that trust supports motivation rather than directly driving it.</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+
+    
     # ==================================================
     # 2️⃣ TRUST BAR CHART
     # ==================================================
