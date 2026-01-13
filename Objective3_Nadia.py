@@ -7,7 +7,6 @@ import numpy as np
 def app():
     st.subheader("Students' Impulse Buying Behavior on TikTok Shop")
 
-    
     # ==================================================
     # SUB-OBJECTIVE & CONTEXT
     # ==================================================
@@ -27,13 +26,31 @@ def app():
     - **Section 6:** Fun and Motivation in Shopping (HM)
     """)
 
-    
     # ==================================================
     # LOAD DATASET
     # ==================================================
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
-    
+    # ==================================================
+    # SIDEBAR FILTERS
+    # ==================================================
+    st.sidebar.header("🔍 Data Filters")
+    if 'gender' in df.columns:
+        selected_gender = st.sidebar.multiselect(
+            "Select Gender",
+            options=df['gender'].unique(),
+            default=df['gender'].unique()
+        )
+        df = df[df['gender'].isin(selected_gender)]
+
+    if 'age_group' in df.columns:
+        selected_age = st.sidebar.multiselect(
+            "Select Age Group",
+            options=df['age_group'].unique(),
+            default=df['age_group'].unique()
+        )
+        df = df[df['age_group'].isin(selected_age)]
+
     # ==================================================
     # DEFINE FACTORS GROUPS
     # ==================================================
@@ -51,74 +68,74 @@ def app():
         'motivated_by_gifts'
     ]
 
-
     # ==================================================
     # CREATE COMPOSITE SCORES
     # ==================================================
     df['Trust_Score'] = df[trust_items].mean(axis=1)
     df['Motivation_Score'] = df[motivation_items].mean(axis=1)
-
-     # 🔧 SAFETY: remove missing values (important)
     df = df.dropna(subset=['Trust_Score', 'Motivation_Score'])
 
-    
     # ==================================================
     # SUMMARY METRICS
     # ==================================================
     st.markdown("## 📊 Summary Metrics")
-    
     metric_cols = ['Trust_Score', 'Motivation_Score']
     missing_cols = [c for c in metric_cols if c not in df.columns]
-    
+
     if not missing_cols:
         col1, col2 = st.columns(2)
-    
-        # Trust Score Metric
         col1.metric(
             label="Average Trust Score",
             value=f"{df['Trust_Score'].mean():.2f}",
             delta=f"{df['Trust_Score'].max() - df['Trust_Score'].min():.2f} range"
         )
-    
-        # Motivation Score Metric
         col2.metric(
             label="Average Motivation Score",
             value=f"{df['Motivation_Score'].mean():.2f}",
             delta=f"{df['Motivation_Score'].max() - df['Motivation_Score'].min():.2f} range"
         )
-    
-        # Descriptive statistics table
-        st.markdown("### 🔍 Descriptive Statistics")
+
         summary_df = df[metric_cols].describe().round(2)
-    
-        # Style dataframe (same visual standard)
         styled_df = summary_df.style.background_gradient(cmap='Blues', axis=1)
         st.dataframe(styled_df, height=220)
-    
     else:
         st.warning(f"Missing columns for summary metrics: {missing_cols}")
+
+    # ==================================================
+    # VISUALIZATION SELECTOR
+    # ==================================================
+    st.markdown("## 📊 Select Visualization Type")
+    viz_option = st.selectbox(
+        "Choose a visualization:",
+        [
+            "Correlation Heatmap",
+            "Trust Bar Chart",
+            "Trust Box Plot",
+            "Motivation Bar Chart",
+            "Trust vs Motivation Scatter",
+            "Trust Radar Chart"
+        ]
+    )
 
     
     # ==================================================
     # 1️⃣ CORRELATION HEATMAP
     # ==================================================
-    st.markdown("### 1️⃣ Correlation Between Trust & Motivation Items")
-    
-    corr_items = trust_items + motivation_items
-    missing_corr = [c for c in corr_items if c not in df.columns]
-    
-    if not missing_corr:
-        corr = df[corr_items].corr()
-    
-        fig1 = px.imshow(
-            corr,
-            text_auto='.2f',
-            zmin=-1,
-            zmax=1,
-            color_continuous_scale='RdBu',
-            title='Correlation Matrix of Trust & Motivation Items'
-        )
-        st.plotly_chart(fig1, use_container_width=True)
+     if viz_option == "Correlation Heatmap":
+        corr_items = trust_items + motivation_items
+        missing_corr = [c for c in corr_items if c not in df.columns]
+
+        if not missing_corr:
+            corr = df[corr_items].corr()
+            fig1 = px.imshow(
+                corr,
+                text_auto='.2f',
+                zmin=-1,
+                zmax=1,
+                color_continuous_scale='RdBu',
+                title='Correlation Matrix of Trust & Motivation Items'
+            )
+            st.plotly_chart(fig1, use_container_width=True)
 
         # -------------------------
         # INTERPRETATION / INSIGHTS
@@ -149,14 +166,20 @@ def app():
     # ==================================================
     # 2️⃣ BAR CHART - TRUST ITEMS
     # ==================================================
-    st.markdown("### 2️⃣ Average Trust Scores by Item")
-    
-    missing_trust = [c for c in trust_items if c not in df.columns]
-    
-    if not missing_trust:
-        trust_means = df[trust_items].mean().reset_index()
+     if viz_option == "Trust Bar Chart":
+        st.markdown("### 🎛 Select Trust Dimensions")
+        selected_trust_items = st.multiselect(
+            "Choose trust items to analyze:",
+            options=trust_items,
+            default=trust_items
+        )
+        if not selected_trust_items:
+            st.warning("Please select at least one trust item.")
+            selected_trust_items = trust_items
+
+        trust_means = df[selected_trust_items].mean().reset_index()
         trust_means.columns = ['Trust Item', 'Mean Score']
-    
+
         fig2 = px.bar(
             trust_means,
             x='Trust Item',
@@ -195,8 +218,7 @@ def app():
     # ==================================================
     # 3️⃣ BOX PLOT - TRUST RESPONSES
     # ==================================================
-    st.markdown("### 3️⃣ Distribution of Trust Responses")
-    if not missing_trust:
+    if viz_option == "Trust Box Plot":
         trust_long = df[trust_items].melt(var_name='Trust Item', value_name='Response')
         fig3 = px.box(trust_long, x='Trust Item', y='Response', points='all', title='Trust Item Response Distribution')
         st.plotly_chart(fig3, use_container_width=True)
@@ -228,13 +250,11 @@ def app():
     # ==================================================
     # 4️⃣ BAR CHART - MOTIVATION ITEMS
     # ==================================================
-    st.markdown("### 4️⃣ Average Motivation Scores by Item")
-    missing_mot = [c for c in motivation_items if c not in df.columns]
-    if not missing_mot:
-        mot_means = df[motivation_items].mean().reset_index()
-        mot_means.columns = ['Motivation Item', 'Mean Score']
-        fig4 = px.bar(mot_means, x='Motivation Item', y='Mean Score', title="Average Motivation Scores")
-        st.plotly_chart(fig4, use_container_width=True)
+    if viz_option == "Motivation Bar Chart":
+            mot_means = df[motivation_items].mean().reset_index()
+            mot_means.columns = ['Motivation Item', 'Mean Score']
+            fig4 = px.bar(mot_means, x='Motivation Item', y='Mean Score', title="Average Motivation Scores")
+            st.plotly_chart(fig4, use_container_width=True)
 
         # -------------------------
         # INTERPRETATION / INSIGHTS
@@ -263,8 +283,9 @@ def app():
     # ==================================================
     # 5️⃣ SCATTER PLOT - TRUST vs MOTIVATION (WITH TRENDLINE)
     # ==================================================
-    st.markdown("### 5️⃣ Relationship Between Trust and Motivation")
-    if 'Trust_Score' in df.columns and 'Motivation_Score' in df.columns:
+    if viz_option == "Trust vs Motivation Scatter":
+        show_trendline = st.checkbox("Show Trend Line", value=True)
+
         fig5 = px.scatter(
             df,
             x='Trust_Score',
@@ -273,14 +294,16 @@ def app():
             title='Trust vs Motivation'
         )
 
-        # Add manual trendline
-        x = df['Trust_Score'].values
-        y = df['Motivation_Score'].values
-        m, b = np.polyfit(x, y, 1)
-        x_line = np.linspace(x.min(), x.max(), 100)
-        y_line = m * x_line + b
-        fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line', line=dict(width=3))
+        if show_trendline:
+            x = df['Trust_Score'].values
+            y = df['Motivation_Score'].values
+            m, b = np.polyfit(x, y, 1)
+            x_line = np.linspace(x.min(), x.max(), 100)
+            y_line = m * x_line + b
+            fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
+
         st.plotly_chart(fig5, use_container_width=True)
+
 
          # -------------------------
         # INTERPRETATION / INSIGHTS
@@ -309,20 +332,19 @@ def app():
     # ==================================================
     # 6️⃣ RADAR CHART - TRUST DIMENSIONS
     # ==================================================
-    st.markdown("### 6️⃣ Trust Dimension Radar Chart")
-    if not missing_trust:
-        import matplotlib.pyplot as plt
+    if viz_option == "Trust Radar Chart":
         labels = trust_items
-        values = trust_means['Mean Score'].tolist()
+        values = df[selected_trust_items].mean().tolist()
         values += values[:1]  # complete loop
         angles = np.linspace(0, 2 * np.pi, len(labels)+1)
+
         fig6, ax = plt.subplots(figsize=(5,5), subplot_kw=dict(polar=True))
         ax.plot(angles, values, linewidth=2)
         ax.fill(angles, values, alpha=0.25)
         ax.set_thetagrids(angles[:-1] * 180/np.pi, labels)
         st.pyplot(fig6)
 
-         # -------------------------
+        # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
         st.markdown("""
