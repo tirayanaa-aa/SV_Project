@@ -122,24 +122,6 @@ def app():
 
     
     # ==================================================
-    # SELECT VISUALIZATION TYPE
-    # ==================================================
-    st.markdown("## 📊 Select Visualization Type")
-    
-    viz_option = st.selectbox(
-        "Choose a visualization:",
-        [
-            "Correlation Heatmap",
-            "Trust Bar Chart",
-            "Trust Box Plot",
-            "Motivation Bar Chart",
-            "Trust vs Motivation Scatter",
-            "Trust Radar Chart"
-        ]
-    )
-
-    
-    # ==================================================
     # 1️⃣ CORRELATION HEATMAP
     # ==================================================
     st.markdown("### 1️⃣ Correlation Between Trust & Motivation Items")
