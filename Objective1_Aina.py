@@ -3,6 +3,9 @@ import streamlit as st
 import pandas as pd
 
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 def app():
     st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
@@ -18,29 +21,6 @@ def app():
     """)
 
     # --------------------------------------------------
-    # MAIN PAGE FILTERS (Structured in Columns)
-    # --------------------------------------------------
-    st.divider()
-    st.subheader("Filter Dataset")
-    
-    # Create two columns for the filters
-    col1, col2 = st.columns(2)
-
-    gender_col = 'gender'
-    age_col = 'age' 
-
-    with col1:
-        # Filter for Gender
-        gender_list = ["All"] + sorted(df[gender_col].dropna().unique().tolist())
-        selected_gender = st.selectbox("Select Gender", gender_list)
-
-    with col2:
-        # Filter for Age Group
-        age_list = ["All"] + sorted(df[age_col].dropna().unique().tolist())
-        selected_age = st.selectbox("Select Age Group", age_list)
-
-    
-    # --------------------------------------------------
     # Load and Clean Dataset
     # --------------------------------------------------
     try:
@@ -50,6 +30,26 @@ def app():
         st.error(f"Error loading file: {e}")
         return
 
+    # --------------------------------------------------
+    # MAIN PAGE FILTERS (Defined BEFORE use)
+    # --------------------------------------------------
+    st.divider()
+    st.subheader("Filter Dataset")
+    
+    # 1. DEFINE COLUMN NAMES FIRST to avoid UnboundLocalError
+    gender_col = 'gender'
+    age_col = 'age' 
+
+    # 2. Create two columns for the filter widgets
+    col1, col2 = st.columns(2)
+
+    with col1:
+        gender_list = ["All"] + sorted(df[gender_col].dropna().unique().tolist())
+        selected_gender = st.selectbox("Select Gender", gender_list)
+
+    with col2:
+        age_list = ["All"] + sorted(df[age_col].dropna().unique().tolist())
+        selected_age = st.selectbox("Select Age Group", age_list)
 
     # --------------------------------------------------
     # Data Filtering Logic
@@ -63,17 +63,15 @@ def app():
         filtered_df = filtered_df[filtered_df[age_col] == selected_age]
 
     # --------------------------------------------------
-    # Visualizations & Dynamic Interpretation
+    # Visualizations
     # --------------------------------------------------
     st.divider()
     
     if filtered_df.empty:
         st.warning(f"No data found for Gender: **{selected_gender}** and Age: **{selected_age}**.")
     else:
-        st.subheader("Demographic Overview")
-        
-        # Prepare Pie Chart Data
-        # Even if one gender is selected, the chart shows the proportion relative to the filter
+        # 1. GENDER PIE CHART
+        st.subheader("Gender Distribution")
         gender_counts = filtered_df[gender_col].value_counts().reset_index()
         gender_counts.columns = [gender_col, 'count']
 
@@ -81,70 +79,47 @@ def app():
             gender_counts, 
             values='count', 
             names=gender_col, 
-            title=f"Gender Distribution (Selected: {selected_gender} | Age: {selected_age})",
+            title=f"Gender Proportion (Filtered by Age: {selected_age})",
             color_discrete_sequence=px.colors.qualitative.Pastel,
             hole=0.4
         )
         st.plotly_chart(fig1, use_container_width=True)
         
-        # Automated Interpretation
+        # Pie Chart Interpretation
         total_n = len(filtered_df)
         top_gender = gender_counts.iloc[0][gender_col]
         percentage = (gender_counts.iloc[0]['count'] / total_n) * 100
 
-        st.info(f"""
-        **Interpretation:** Under the current selection (**Gender: {selected_gender}** and **Age: {selected_age}**), 
-        the data represents a sample size of **n={total_n}**. 
+        st.info(f"**Interpretation:** The filtered data (n={total_n}) is dominated by **{top_gender}s**, representing **{percentage:.1f}%** of the selection.")
+
+        # --------------------------------------------------
+        # 2. AGE GROUP HISTOGRAM
+        # --------------------------------------------------
+        st.divider()
+        st.subheader("Usage by Age")
         
-        The primary group identified is **{top_gender}**, making up **{percentage:.1f}%** of this specific segment. 
-        This data helps in understanding if specific gender-age combinations show higher engagement levels on TikTok Shop.
+        age_order = ['17 - 21 years old', '22 - 26 years old', '27 - 31 years old']
+        
+        fig2 = px.histogram(
+            filtered_df, 
+            x=age_col, 
+            color='tiktok_shop_experience',
+            barmode='group',
+            category_orders={age_col: age_order},
+            color_discrete_sequence=px.colors.qualitative.Bold,
+            title='TikTok Shop Usage across Age Groups'
+        )
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.write(f"""
+        **Interpretation:** This histogram displays usage patterns for the **{selected_gender}** demographic. 
+        Historically, the 22–26 years old group shows the highest activity. By filtering for **{selected_gender}**, 
+        you can see if this trend remains consistent across genders.
         """)
 
 # Execute the app
 if __name__ == "__main__":
     app()
-  # --------------------------------------------------
-    # 2. Age Group Histogram (Using Filters)
-    # --------------------------------------------------
-    st.divider()
-    st.subheader("Usage by Age")
-
-    if filtered_df.empty:
-        st.warning("No data found for the selected filters to display the usage chart.")
-    else:
-        # Define the logical order for age groups
-        age_order = ['17 - 21 years old', '22 - 26 years old', '27 - 31 years old']
-        
-        # We use filtered_df here so the histogram reacts to the Selectboxes
-        fig2 = px.histogram(
-            filtered_df, 
-            x='age', 
-            color='tiktok_shop_experience',
-            barmode='group',
-            category_orders={'age': age_order},
-            color_discrete_sequence=px.colors.qualitative.Bold,
-            title=f'TikTok Shop Usage: {selected_gender} Group ({selected_age})'
-        )
-        
-        # Improve layout for better readability
-        fig2.update_layout(yaxis_title="Number of Respondents", xaxis_title="Age Group")
-        
-        st.plotly_chart(fig2, use_container_width=True)
-
-        # --------------------------------------------------
-        # Dynamic Interpretation for Histogram
-        # --------------------------------------------------
-        # Logic to find the peak age group in the filtered data
-        if not filtered_df.empty:
-            age_counts = filtered_df['age'].value_counts()
-            top_age = age_counts.idxmax()
-            top_age_count = age_counts.max()
-            
-            st.write(f"""
-            **Interpretation:** Based on the selected filters, the **{top_age}** age group shows the highest concentration 
-            of respondents with **{top_age_count}** entries. When analyzed alongside TikTok Shop experience, 
-            this visualization helps identify which specific age bracket within the **{selected_gender}** demographic is most active on the platform.
-            """)
     
     # 3. Monthly Income Distribution
     st.subheader("Income Distribution")
