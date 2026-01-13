@@ -119,24 +119,47 @@ def app():
     top_income = df['monthly_income'].value_counts().idxmax()
     st.info(f"**Interpretation:** 💵 Most users fall into the **{top_income}** category, suggesting a demographic that values budget-friendly shopping.")
 
-    # --------------------------------------------------
-    # 4. Faculty Distribution (Independent)
+  # --------------------------------------------------
+    # 4. 🎓 Distribution by Faculty
     # --------------------------------------------------
     st.divider()
     st.subheader("4. 🎓 Distribution by Faculty")
-    faculty_counts = df['faculty'].value_counts().reset_index()
+
+    # Define your official survey faculty list
+    official_faculties = ['FKP', 'FTKW', 'FSB', 'FHPK', 'FBI', 'FSDK']
+
+    # Create a copy for processing
+    faculty_df = df.copy()
+
+    # Logic to group everything else into 'Other'
+    faculty_df['faculty_cleaned'] = faculty_df['faculty'].apply(
+        lambda x: x if x in official_faculties else 'Other'
+    )
+
+    # Count the cleaned faculty data
+    faculty_counts = faculty_df['faculty_cleaned'].value_counts().reset_index()
     faculty_counts.columns = ['faculty', 'count']
+    
+    # Sort so the highest is at the top of the horizontal bar
     faculty_counts = faculty_counts.sort_values(by='count', ascending=True)
 
     fig4 = px.bar(
-        faculty_counts, x='count', y='faculty', orientation='h',
-        title='User Count by Faculty',
-        color='count', color_continuous_scale='Viridis'
+        faculty_counts, 
+        x='count', 
+        y='faculty', 
+        orientation='h',
+        title='User Distribution by Official Faculty Categories',
+        color='count', 
+        color_continuous_scale='Viridis',
+        # Ensure 'Other' stays at the bottom or top consistently if preferred
+        category_orders={'faculty': ['Other'] + official_faculties} 
     )
+    
     st.plotly_chart(fig4, use_container_width=True)
     
+    # Dynamic Interpretation
     top_faculty = faculty_counts.iloc[-1]['faculty']
-    st.info(f"**Interpretation:** 🏫 Students from the **{top_faculty}** faculty are the most frequent users in this dataset.")
+    st.info(f"**Interpretation:** 🏫 The **{top_faculty}** faculty shows the highest participation rate in this survey. Responses from smaller departments or unofficial entries have been grouped into **'Other'** to match the core survey structure.")
 
     # --------------------------------------------------
     # 5. TikTok Shop Experience by Gender (Independent)
