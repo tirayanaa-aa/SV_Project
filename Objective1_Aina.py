@@ -28,25 +28,44 @@ def app():
         st.error(f"Error loading file: {e}")
         return
 
-    # --------------------------------------------------
-    # MAIN PAGE FILTER (Applies only to Pie Chart)
+  # --------------------------------------------------
+    # MAIN PAGE FILTER (Pie Chart Only)
     # --------------------------------------------------
     st.divider()
-    st.subheader("Filter Pie Chart")
+    st.subheader("🔍 Filter Demographic Profile")
     
-    # Define column names based on your actual CSV headers
-    gender_col = 'gender'
     age_col = 'age' 
-
-    # Filter for Age Group
+    gender_col = 'gender'
     age_list = ["All"] + sorted(df[age_col].dropna().unique().tolist())
     selected_age = st.selectbox("Select Age Group to filter Gender Distribution below:", age_list)
 
-    # Filtering Logic for PIE CHART ONLY
     if selected_age != "All":
         pie_df = df[df[age_col] == selected_age]
     else:
         pie_df = df.copy()
+
+    # --------------------------------------------------
+    # NEW: SUMMARY SECTION 📋
+    # --------------------------------------------------
+    st.subheader("📋 Executive Summary")
+    
+    # Calculate key metrics
+    total_respondents = len(df)
+    filtered_n = len(pie_df)
+    active_users = len(df[df['tiktok_shop_experience'] == 'Yes'])
+    usage_rate = (active_users / total_respondents) * 100
+
+    # Display Metrics in Columns
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Total Respondents", total_respondents)
+    m2.metric(f"Filtered Sample ({selected_age})", filtered_n)
+    m3.metric("Overall Usage Rate", f"{usage_rate:.1f}%")
+
+    st.info(f"""
+    **Quick Insight:** 💡 Out of **{total_respondents}** total participants, the data shows a strong engagement rate 
+    of **{usage_rate:.1f}%**. Currently, you are viewing a deep-dive into the **{selected_age}** demographic, 
+    which consists of **{filtered_n}** individuals.
+    """)copy()
 
     # --------------------------------------------------
     # 1. GENDER PIE CHART (Filtered by Age)
