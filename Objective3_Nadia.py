@@ -159,7 +159,23 @@ def app():
     else:
         st.warning(f"Missing columns for correlation: {missing_corr}")
         
+    
+    # ==================================================
+    # INTERACTIVE TRUST ITEM SELECTION (CREATIVE FEATURE)
+    # ==================================================
+    st.markdown("### 🎛 Select Trust Items for Analysis")
+    
+    selected_trust_items = st.multiselect(
+        "Choose trust dimensions to display:",
+        options=trust_items,
+        default=trust_items
+    )
+    
+    if not selected_trust_items:
+        st.warning("Please select at least one trust item.")
+        selected_trust_items = trust_items
 
+    
     # ==================================================
     # 2️⃣ BAR CHART - TRUST ITEMS
     # ==================================================
@@ -205,23 +221,6 @@ def app():
         
     else:
         st.warning(f"Missing trust columns: {missing_trust}")
-
-
-    # ==================================================
-    # INTERACTIVE TRUST ITEM SELECTION (CREATIVE FEATURE)
-    # ==================================================
-    st.markdown("### 🎛 Select Trust Items for Analysis")
-    
-    selected_trust_items = st.multiselect(
-        "Choose trust dimensions to display:",
-        options=trust_items,
-        default=trust_items
-    )
-    
-    # Fallback safety (important)
-    if not selected_trust_items:
-        st.warning("Please select at least one trust item to display.")
-        selected_trust_items = trust_items
 
     
     # ==================================================
