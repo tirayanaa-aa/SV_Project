@@ -6,12 +6,12 @@ import pandas as pd
 
 
 def app():
-    st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
+    st.header("📌Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
 
     # --------------------------------------------------
     # Problem Statement
     # --------------------------------------------------
-    st.subheader("Problem Statement")
+    st.subheader("🔍Problem Statement")
     st.write("""
     E-commerce platforms such as TikTok Shop serve users from diverse demographic backgrounds. 
     However, limited understanding of how factors such as gender, age group, faculty, and income 
