@@ -40,7 +40,7 @@ def app():
     # Use the actual column names from your CSV. 
     # If they are different (e.g., 'Age' instead of 'age_group'), change these variables:
     faculty_col = 'faculty'
-    age_col = 'age_group' 
+    age_col = 'age' 
 
     # Faculty Filter
     faculty_list = ["All"] + sorted(df[faculty_col].dropna().unique().tolist())
