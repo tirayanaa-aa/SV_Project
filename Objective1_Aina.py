@@ -3,6 +3,10 @@ import streamlit as st
 import pandas as pd
 
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
 def app():
     st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
 
@@ -17,16 +21,18 @@ def app():
     """)
 
     # --------------------------------------------------
-    # Load dataset
+    # Load and Clean Dataset
     # --------------------------------------------------
-    # Ensure this CSV file is in the same folder
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
+    
+    # Standardize column names to avoid KeyErrors (removes spaces/caps)
+    df.columns = df.columns.str.strip().str.lower()
 
     # --------------------------------------------------
-    # SIDEBAR FILTERS
+    # Sidebar Filters
     # --------------------------------------------------
     st.sidebar.header("Filter Options")
-    
+
     # Faculty Filter
     faculty_list = ["All"] + sorted(df['faculty'].unique().tolist())
     selected_faculty = st.sidebar.selectbox("Select Faculty", faculty_list)
@@ -35,7 +41,7 @@ def app():
     age_list = ["All"] + sorted(df['age_group'].unique().tolist())
     selected_age = st.sidebar.selectbox("Select Age Group", age_list)
 
-    # Apply Filters to Dataframe
+    # Apply Filtering Logic
     filtered_df = df.copy()
     if selected_faculty != "All":
         filtered_df = filtered_df[filtered_df['faculty'] == selected_faculty]
@@ -44,13 +50,15 @@ def app():
         filtered_df = filtered_df[filtered_df['age'] == selected_age]
 
     # --------------------------------------------------
-    # 1. Gender Pie Chart
+    # Visualizations
     # --------------------------------------------------
-    st.subheader("Gender Distribution")
-    
+    st.divider() # Visual separation
+    st.subheader("Gender Distribution Analysis")
+
     if filtered_df.empty:
-        st.warning("No data available for the selected filters.")
+        st.warning("No data found for the selected filters. Please adjust your criteria.")
     else:
+        # 1. Gender Pie Chart
         gender_counts = filtered_df['gender'].value_counts().reset_index()
         gender_counts.columns = ['gender', 'count']
 
@@ -58,29 +66,27 @@ def app():
             gender_counts, 
             values='count', 
             names='gender', 
-            title=f'Gender Distribution for {selected_faculty} Faculty',
-            color_discrete_sequence=px.colors.qualitative.Pastel
+            title=f"Gender Distribution: {selected_faculty} (Age: {selected_age})",
+            color_discrete_sequence=px.colors.qualitative.Pastel,
+            hole=0.4 # Converts pie to a Donut chart for a modern look
         )
         st.plotly_chart(fig1, use_container_width=True)
-        
+
         # --------------------------------------------------
-        # DYNAMIC INTERPRETATION
+        # Dynamic Interpretation
         # --------------------------------------------------
-        # Calculate dynamic values for the interpretation text
-        total_responses = gender_counts['count'].sum()
+        # Calculate stats for the text
+        total_n = gender_counts['count'].sum()
         top_gender = gender_counts.iloc[0]['gender']
-        top_count = gender_counts.iloc[0]['count']
-        percentage = (top_count / total_responses) * 100
+        top_pct = (gender_counts.iloc[0]['count'] / total_n) * 100
 
         st.info(f"""
-        **Interpretation:** The pie chart reveals that for the selected criteria (**Faculty: {selected_faculty}** and **Age: {selected_age}**), 
-        the respondent pool is dominated by **{top_gender}s**, representing **{percentage:.1f}%** ({top_count} out of {total_responses}) of the total subset. 
-        This suggests that marketing efforts within this specific segment should be 
-        heavily tailored toward the **{top_gender}** demographic to maximize engagement.
+        **Interpretation:** The analysis for the selected filters reveals that the respondent pool is dominated by **{top_gender}s**, 
+        representing **{top_pct:.1f}%** of the total (**n={total_n}**). This suggests that marketing 
+        efforts for this segment should be tailored specifically toward the {top_gender} demographic.
         """)
 
     # --------------------------------------------------
-
     
     # 2. Age Group Histogram
     st.subheader("Usage by Age")
