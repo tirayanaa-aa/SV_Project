@@ -140,25 +140,12 @@ def app():
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>Trust-related items show moderate to strong positive correlations among themselves, which particularly between honesty and quality matching the product description.</li>
-            <li>Motivation factors such as discounts and gifts are also strongly correlated with each other, indicating consistent promotional influence.</li>
-            <li>Several trust items will demonstrate the moderate postive relationships with motivation variables, that will suggesting that the higher trust is associated with increased shopping motivation.</li>
-            <li>However, the correlarions between trust and motivation are generally weaker than those within each construct, indicating that trust supports motivation rathen than directly driving it.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
+        with st.expander("📌 Key Insights"):
+                st.markdown("""
+                - Trust-related items show strong internal consistency.
+                - Promotional incentives are strongly associated with motivation.
+                - Trust supports motivation rather than directly driving impulse buying.
+                """)
     else:
         st.warning(f"Missing columns for correlation: {missing_corr}")
         
@@ -191,28 +178,13 @@ def app():
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>Overall, trust levels are positive, with all items scoring above the midpoint, which suggestes that the customers generally feel confident about the brand.</li>
-            <li>The strongest area is product variety that meeting the customer needs, indicating that this offerings align well with what people are lookinh for.</li>
-            <li>Trust in reliability, honesty, and quality matching the description is also solid, by showing the consistency between the promises and the actual experience.</li>
-            <li>The slightly lower score for "no risk" suggests that while trust is high, some customers may still have minor concerns that could be addressed through clearer guarantees or communication.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
-        
-    else:
-        st.warning(f"Missing trust columns: {missing_trust}")
+        with st.expander("📌 Key Insights"):
+            st.markdown("""
+            - Overall, trust levels are positive.
+            - Product variety and quality are the strongest areas.
+            - Honesty and reliability are solid.
+            - "No risk" is slightly lower, suggesting room for improvement.
+            """)
 
     
     # ==================================================
@@ -226,25 +198,12 @@ def app():
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>Most trust items have median responses between 3 and 4, indicating an overall positive level of trust among respondents.</li>
-            <li>The item related to product variety meeting needs shows a slightly higher median and wider spread, suggesting varied but generally favourable perceptions.</li>
-            <li>Trust in seller honesty and product description accuracy demostrates relatively consistent responses, with fewer extreme values.</li>
-            <li>Overall, the distribution indicate that respondents tend to agree with trust statements, although some variation exists across different trust dimensions.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
+        with st.expander("📌 Key Insights"):
+            st.markdown("""
+            - Most trust items have median responses between 3 and 4.
+            - Product variety shows higher median and wider spread.
+            - Seller honesty and product description accuracy are consistent.
+            """)
 
 
     # ==================================================
@@ -259,25 +218,12 @@ def app():
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>Discounts and promotions are the strongest motivator, clearly standing out as the main driver of customer interest.</li>
-            <li>Gifts also play a meaningfull role, by showing that added value beyond the core product resonates well with customers.</li>
-            <li>Relaxation and stress reduction score slightly lower, but still indicate moderate motivation rather than disinterest.</li>
-            <li>Overall, customers appear more motivated by tangible incentives than emotional or lifestyle benefits.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
+         with st.expander("📌 Key Insights"):
+                st.markdown("""
+                - Discounts and promotions are the strongest motivators.
+                - Gifts also play a meaningful role.
+                - Relaxation and stress reduction show moderate motivation.
+                """)
 
 
     # ==================================================
@@ -305,28 +251,15 @@ def app():
         st.plotly_chart(fig5, use_container_width=True)
 
 
-         # -------------------------
+        # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>The scatter plot shows a clear positive relationship between trust score and motivation score, as the higher levels are generally associated with the higher shopping motivation.</li>
-            <li>The upward-sloping trend line indicates that the motivation tends to increase steadily as trust improves.</li>
-            <li>Although some variation exists at similar trust levels, the overall pattern will remains the consistent across the data points.</li>
-            <li>This suggests that trust will plays a supportive role in enhancing the consumers' motivation to shop on this platform.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
+        with st.expander("📌 Key Insights"):
+            st.markdown("""
+            - Positive relationship between trust and motivation.
+            - Higher trust is associated with higher motivation.
+            - Trend line shows steady increase.
+            """)
 
 
     # ==================================================
@@ -347,22 +280,10 @@ def app():
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
-        st.markdown("""
-        <div style="
-            background-color:#f8fafc;
-            padding:16px;
-            border-left:6px solid #6366f1;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.05);
-            margin-top:10px;
-        ">
-        <h4 style="margin-bottom:8px;">📌 Key Insights</h4>
-
-        <ul style="margin-left:15px;">
-            <li>Overall, trust levels are fairly strong across all dimensions, with no area showing serious weakness.</li>
-            <li>Customers are feel most confident that the product variety meets their needs and that quality matches the description, that suggesting expectations are largely being met.</li>
-            <li>Trust in honesty and reliability is also high, indicating the posistive perceptions of seller integrity.</li>
-            <li>However, the slightly lower score on "no risk" that suggests some customers may still feel cautions, leaving room to strengthen reassurance and transparency.</li>
-        </ul>
-        </div>
-         """, unsafe_allow_html=True)
+         with st.expander("📌 Key Insights"):
+            st.markdown("""
+            - Trust is strong across all dimensions.
+            - Product variety and quality are highest.
+            - Honesty and reliability are positive.
+            - "No risk" is slightly lower, indicating room for reassurance.
+            """)
