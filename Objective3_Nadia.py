@@ -5,33 +5,34 @@ import numpy as np
 
 def app():
     # ==================================================
-    # MAIN TITLE
-    # ==================================================
-    st.subheader("Students' Impulse Buying Behavior on TikTok Shop")
-    
-    # Add spacing
-    st.markdown("<br><br>", unsafe_allow_html=True)
-
-    # ==================================================
-    # SUB-OBJECTIVE & CONTEXT (CENTERED)
+    # MAIN TITLE (BIG & CENTERED)
     # ==================================================
     st.markdown("""
-    <h2 style='text-align: center;'>📌 Sub-Objective 3: Examine Trust, Enjoyment & Shopping Motivation on TikTok Shop</h2>
-    <br>
-    <h4>🎯 Sub-Objective</h4>
+    <h1 style='text-align: center; font-size: 36px; color: #1f77b4;'>
+        Students' Impulse Buying Behavior on TikTok Shop
+    </h1>
+    <br><br>
+    """, unsafe_allow_html=True)
+
+    # ==================================================
+    # CONTEXT / PROBLEM STATEMENT (CENTERED OPTIONAL)
+    # ==================================================
+    st.markdown("""
+    <h4 style='text-align: left;'>🎯 Objective</h4>
     <p>To investigate the role of trust, enjoyment, and motivation in shaping users’ shopping experiences on TikTok Shop.</p>
 
-    <h4>🧩 Problem Statement</h4>
+    <h4 style='text-align: left;'>🧩 Problem Statement</h4>
     <p>Trust and enjoyment are critical psychological factors influencing online shopping decisions. 
     A lack of consumer trust or low enjoyment levels may negatively affect purchasing behavior. 
     Therefore, visually analyzing these constructs can help identify patterns and insights in users’ shopping experiences on TikTok Shop.</p>
     
-    <h4>📋 Relevant Questionnaire Sections</h4>
+    <h4 style='text-align: left;'>📋 Relevant Questionnaire Sections</h4>
     <ul>
         <li><b>Section 5:</b> Trust in TikTok Shop (TR)</li>
         <li><b>Section 6:</b> Fun and Motivation in Shopping (HM)</li>
     </ul>
     """, unsafe_allow_html=True)
+    
 
     # ==================================================
     # LOAD DATASET
