@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import matplotlib.pyplot as plt
 import numpy as np
 
 def app():
@@ -68,12 +67,18 @@ def app():
         'motivated_by_gifts'
     ]
 
-    
     # ==================================================
-    # INITIALIZE TRUST ITEM SELECTION FOR SAFETY
+    # CENTRALIZED TRUST ITEM SELECTION
     # ==================================================
-    selected_trust_items = trust_items.copy()
-
+    st.sidebar.header("🎛 Select Trust Items for Analysis")
+    selected_trust_items = st.sidebar.multiselect(
+        "Choose trust items:",
+        options=trust_items,
+        default=trust_items
+    )
+    if not selected_trust_items:
+        st.warning("Please select at least one trust item.")
+        selected_trust_items = trust_items
 
     # ==================================================
     # CREATE COMPOSITE SCORES
@@ -102,11 +107,33 @@ def app():
             delta=f"{df['Motivation_Score'].max() - df['Motivation_Score'].min():.2f} range"
         )
 
-        summary_df = df[metric_cols].describe().round(2)
-        styled_df = summary_df.style.background_gradient(cmap='Blues', axis=1)
-        st.dataframe(styled_df, height=220)
+        summary_df = df[metric_cols].agg(['mean','min','max']).T.round(2)
+        st.dataframe(summary_df.style.background_gradient(cmap='Blues'), height=220)
     else:
         st.warning(f"Missing columns for summary metrics: {missing_cols}")
+
+    # ==================================================
+    # HELPER FUNCTIONS
+    # ==================================================
+    def plot_bar(df, items, title):
+        means = df[items].mean().reset_index()
+        means.columns = ['Item', 'Mean Score']
+        fig = px.bar(means, x='Item', y='Mean Score', title=title)
+        st.plotly_chart(fig, use_container_width=True)
+        # Automated insights
+        with st.expander("📌 Key Insights"):
+            for i, row in means.iterrows():
+                if row['Mean Score'] > 4:
+                    st.markdown(f"- **{row['Item']}** is very high ({row['Mean Score']:.2f})")
+                elif row['Mean Score'] < 3:
+                    st.markdown(f"- **{row['Item']}** is relatively low ({row['Mean Score']:.2f})")
+                else:
+                    st.markdown(f"- **{row['Item']}** is moderate ({row['Mean Score']:.2f})")
+
+    def plot_box(df, items, title):
+        df_long = df[items].melt(var_name='Item', value_name='Score')
+        fig = px.box(df_long, x='Item', y='Score', points='all', title=title)
+        st.plotly_chart(fig, use_container_width=True)
 
     # ==================================================
     # VISUALIZATION SELECTOR
@@ -133,7 +160,7 @@ def app():
 
         if not missing_corr:
             corr = df[corr_items].corr()
-            fig1 = px.imshow(
+            fig = px.imshow(
                 corr,
                 text_auto='.2f',
                 zmin=-1,
@@ -141,91 +168,44 @@ def app():
                 color_continuous_scale='RdBu',
                 title='Correlation Matrix of Trust & Motivation Items'
             )
-            st.plotly_chart(fig1, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
 
-            with st.expander("📌 Key Insights"):
-                st.markdown("""
-                - Trust-related items show strong internal consistency.
-                - Promotional incentives are strongly associated with motivation.
-                - Trust supports motivation rather than directly driving impulse buying.
-                """)
-        else:
-            st.warning(f"Missing columns for correlation: {missing_corr}")
+            # Highlight strong correlations
+            strong_corr = corr[(corr.abs() > 0.7) & (corr.abs() < 1)]
+            if not strong_corr.empty:
+                st.markdown("**Strong correlations (>|0.7|):**")
+                st.dataframe(strong_corr)
 
     # ==================================================
     # 2️⃣ TRUST BAR CHART
     # ==================================================
     if viz_option == "Trust Bar Chart":
-        st.markdown("### 🎛 Select Trust Dimensions")
-        selected_trust_items = st.multiselect(
-            "Choose trust items to analyze:",
-            options=trust_items,
-            default=trust_items
-        )
-        if not selected_trust_items:
-            st.warning("Please select at least one trust item.")
-            selected_trust_items = trust_items
-
-        trust_means = df[selected_trust_items].mean().reset_index()
-        trust_means.columns = ['Trust Item', 'Mean Score']
-
-        fig2 = px.bar(
-            trust_means,
-            x='Trust Item',
-            y='Mean Score',
-            title="Average Trust Scores"
-        )
-        st.plotly_chart(fig2, use_container_width=True)
-
-        with st.expander("📌 Key Insights"):
-            st.markdown("""
-            - Overall, trust levels are positive.
-            - Product variety and quality are the strongest areas.
-            - Honesty and reliability are solid.
-            - "No risk" is slightly lower, suggesting room for improvement.
-            """)
+        plot_bar(df, selected_trust_items, "Average Trust Scores")
 
     # ==================================================
     # 3️⃣ TRUST BOX PLOT
     # ==================================================
     if viz_option == "Trust Box Plot":
-        trust_long = df[trust_items].melt(var_name='Trust Item', value_name='Response')
-        fig3 = px.box(trust_long, x='Trust Item', y='Response', points='all', title='Trust Item Response Distribution')
-        st.plotly_chart(fig3, use_container_width=True)
-
-        with st.expander("📌 Key Insights"):
-            st.markdown("""
-            - Most trust items have median responses between 3 and 4.
-            - Product variety shows higher median and wider spread.
-            - Seller honesty and product description accuracy are consistent.
-            """)
+        plot_box(df, selected_trust_items, "Trust Item Response Distribution")
 
     # ==================================================
     # 4️⃣ MOTIVATION BAR CHART
     # ==================================================
     if viz_option == "Motivation Bar Chart":
-        mot_means = df[motivation_items].mean().reset_index()
-        mot_means.columns = ['Motivation Item', 'Mean Score']
-        fig4 = px.bar(mot_means, x='Motivation Item', y='Mean Score', title="Average Motivation Scores")
-        st.plotly_chart(fig4, use_container_width=True)
-
-        with st.expander("📌 Key Insights"):
-            st.markdown("""
-            - Discounts and promotions are the strongest motivators.
-            - Gifts also play a meaningful role.
-            - Relaxation and stress reduction show moderate motivation.
-            """)
+        plot_bar(df, motivation_items, "Average Motivation Scores")
 
     # ==================================================
     # 5️⃣ SCATTER PLOT
     # ==================================================
     if viz_option == "Trust vs Motivation Scatter":
         show_trendline = st.checkbox("Show Trend Line", value=True)
+        color_col = 'gender' if 'gender' in df.columns else None
 
-        fig5 = px.scatter(
+        fig = px.scatter(
             df,
             x='Trust_Score',
             y='Motivation_Score',
+            color=color_col,
             labels={'Trust_Score': 'Trust Score', 'Motivation_Score': 'Motivation Score'},
             title='Trust vs Motivation'
         )
@@ -236,66 +216,47 @@ def app():
             m, b = np.polyfit(x, y, 1)
             x_line = np.linspace(x.min(), x.max(), 100)
             y_line = m * x_line + b
-            fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
+            fig.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
 
-        st.plotly_chart(fig5, use_container_width=True)
-
-        with st.expander("📌 Key Insights"):
-            st.markdown("""
-            - Positive relationship between trust and motivation.
-            - Higher trust is associated with higher motivation.
-            - Trend line shows steady increase.
-            """)
-
+        st.plotly_chart(fig, use_container_width=True)
 
     # ==================================================
-    # 6️⃣ RADAR CHART - INTERACTIVE (USING PLOTLY)
+    # 6️⃣ RADAR CHART - INTERACTIVE
     # ==================================================
     if viz_option == "Trust Radar Chart":
-        st.markdown("### 🎛 Select Trust Dimensions for Radar Chart")
-        selected_trust_items = st.multiselect(
-            "Choose trust items to include in the radar chart:",
-            options=trust_items,
-            default=trust_items
-        )
-    
-        if not selected_trust_items:
-            st.warning("Please select at least one trust item.")
-            selected_trust_items = trust_items
-    
-        # Prepare data for radar chart
         radar_df = pd.DataFrame({
             'Trust Item': selected_trust_items,
             'Average Score': df[selected_trust_items].mean().values
         })
-    
-        # Complete the loop for radar chart (replace append with concat)
         radar_df = pd.concat([radar_df, radar_df.iloc[[0]]], ignore_index=True)
-    
-        # Plot interactive radar chart
+
         fig_radar = px.line_polar(
             radar_df,
             r='Average Score',
             theta='Trust Item',
             line_close=True,
             markers=True,
-            title="Interactive Radar Chart of Trust Dimensions"
+            title="Interactive Radar Chart of Trust Dimensions",
+            hover_name='Trust Item',
+            hover_data={'Average Score': True}
         )
         fig_radar.update_traces(fill='toself')
         fig_radar.update_layout(
             polar=dict(
-                radialaxis=dict(range=[0, 5], visible=True, tickvals=[1,2,3,4,5]),
+                radialaxis=dict(range=[0, 5], visible=True, tickvals=[1,2,3,4,5])
             ),
             showlegend=False
         )
-    
         st.plotly_chart(fig_radar, use_container_width=True)
-    
-        # Key insights
+
+        # Automated key insights
         with st.expander("📌 Key Insights"):
-            st.markdown("""
-            - Trust is strong across all selected dimensions.
-            - Product variety and quality are usually the highest.
-            - Honesty and reliability are positive.
-            - "No risk" may be lower, suggesting room for reassurance.
-            """)
+            for i, row in radar_df.iloc[:-1].iterrows():
+                score = row['Average Score']
+                item = row['Trust Item']
+                if score > 4:
+                    st.markdown(f"- **{item}** is very high ({score:.2f})")
+                elif score < 3:
+                    st.markdown(f"- **{item}** is relatively low ({score:.2f})")
+                else:
+                    st.markdown(f"- **{item}** is moderate ({score:.2f})")
