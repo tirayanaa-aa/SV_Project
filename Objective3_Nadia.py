@@ -35,6 +35,20 @@ def app():
 
     
     # ==================================================
+    # FILTER OPTIONS
+    # ==================================================
+    st.sidebar.header("🔍 Filter Options")
+
+    if 'gender' in df.columns:
+        selected_gender = st.sidebar.multiselect(
+            "Select Gender",
+            options=df['gender'].unique(),
+            default=df['gender'].unique()
+        )
+        df = df[df['gender'].isin(selected_gender)]
+
+    
+    # ==================================================
     # DEFINE FACTORS GROUPS
     # ==================================================
     trust_items = [
