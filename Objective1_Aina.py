@@ -4,15 +4,29 @@ import pandas as pd
 
 
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
 def app():
     st.header("Sub-Objective 1: Analyze the Demographic Profile and TikTok Shop Usage")
+
+    # --------------------------------------------------
+    # Problem Statement
+    # --------------------------------------------------
+    st.subheader("Problem Statement")
+    st.write("""
+    E-commerce platforms such as TikTok Shop serve users from diverse demographic backgrounds. 
+    However, limited understanding of how factors such as gender, age group, faculty, and income 
+    relate to TikTok Shop usage may reduce the effectiveness of targeted marketing strategies.
+    """)
 
     # --------------------------------------------------
     # Load and Clean Dataset
     # --------------------------------------------------
     try:
         df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
-        df.columns = df.columns.str.strip()
+        df.columns = df.columns.str.strip() # Remove hidden spaces to prevent KeyErrors
     except Exception as e:
         st.error(f"Error loading file: {e}")
         return
@@ -23,7 +37,11 @@ def app():
     st.divider()
     st.subheader("Filter Pie Chart")
     
+    # Define column names based on your actual CSV headers
+    gender_col = 'gender'
     age_col = 'age' 
+
+    # Filter for Age Group
     age_list = ["All"] + sorted(df[age_col].dropna().unique().tolist())
     selected_age = st.selectbox("Select Age Group to filter Gender Distribution below:", age_list)
 
@@ -42,18 +60,18 @@ def app():
     if pie_df.empty:
         st.warning(f"No data found for Age Group: {selected_age}")
     else:
-        gender_counts = pie_df['gender'].value_counts().reset_index()
-        gender_counts.columns = ['gender', 'count']
+        gender_counts = pie_df[gender_col].value_counts().reset_index()
+        gender_counts.columns = [gender_col, 'count']
 
         fig1 = px.pie(
-            gender_counts, values='count', names='gender', 
+            gender_counts, values='count', names=gender_col, 
             title=f"Gender Proportion for Age Group: {selected_age}",
             color_discrete_sequence=px.colors.qualitative.Pastel, hole=0.4
         )
         st.plotly_chart(fig1, use_container_width=True)
         
         # Dynamic Interpretation
-        top_gender = gender_counts.iloc[0]['gender']
+        top_gender = gender_counts.iloc[0][gender_col]
         percentage = (gender_counts.iloc[0]['count'] / len(pie_df)) * 100
         st.info(f"**Interpretation:** For the **{selected_age}** group, the population is dominated by **{top_gender}s** ({percentage:.1f}%).")
 
@@ -108,8 +126,28 @@ def app():
     st.plotly_chart(fig4, use_container_width=True)
     
     top_faculty = faculty_counts.iloc[-1]['faculty']
-    st.info(f
+    st.info(f"**Interpretation:** The data indicates that the highest participation comes from the **{top_faculty}** faculty, followed by other academic departments.")
 
+    # --------------------------------------------------
+    # 5. TikTok Shop Experience by Gender (Independent)
+    # --------------------------------------------------
+    st.divider()
+    st.subheader("5. TikTok Shop Experience by Gender")
+    crosstab_df = pd.crosstab(df['gender'], df['tiktok_shop_experience']).reset_index()
+
+    fig5 = px.bar(
+        crosstab_df, x='gender', y=crosstab_df.columns[1:], 
+        title='Overall TikTok Shop Experience by Gender',
+        labels={'gender': 'Gender', 'value': 'Count', 'variable': 'Experience'},
+        color_discrete_sequence=px.colors.qualitative.Set2, barmode='stack'
+    )
+    st.plotly_chart(fig5, use_container_width=True)
+
+    st.info("**Interpretation:** The stacked bar chart reveals the distribution of platform adoption across genders, helping identify if a usage gap exists between male and female respondents.")
+
+# Execute the app
+if __name__ == "__main__":
+    app()
 
 
 
