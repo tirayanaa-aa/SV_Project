@@ -40,7 +40,7 @@ def app():
             "Select Gender",
             options=df['gender'].unique(),
             default=df['gender'].unique()
-        )
+    )
         df = df[df['gender'].isin(selected_gender)]
 
     if 'age_group' in df.columns:
@@ -48,7 +48,7 @@ def app():
             "Select Age Group",
             options=df['age_group'].unique(),
             default=df['age_group'].unique()
-        )
+    )
         df = df[df['age_group'].isin(selected_age)]
 
     # ==================================================
@@ -88,12 +88,12 @@ def app():
             label="Average Trust Score",
             value=f"{df['Trust_Score'].mean():.2f}",
             delta=f"{df['Trust_Score'].max() - df['Trust_Score'].min():.2f} range"
-        )
+    )
         col2.metric(
             label="Average Motivation Score",
             value=f"{df['Motivation_Score'].mean():.2f}",
             delta=f"{df['Motivation_Score'].max() - df['Motivation_Score'].min():.2f} range"
-        )
+    )
 
         summary_df = df[metric_cols].describe().round(2)
         styled_df = summary_df.style.background_gradient(cmap='Blues', axis=1)
