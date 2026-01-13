@@ -200,7 +200,7 @@ def app():
 
     
     # ==================================================
-    # 2️⃣ TRUST BAR CHART
+    # 2️⃣ BAR CHART - TRUST ITEMS
     # ==================================================
     if viz_option == "Trust Bar Chart":
         st.markdown("### 🎛 Select Trust Dimensions")
@@ -238,80 +238,109 @@ def app():
             """, unsafe_allow_html=True)
 
     # ==================================================
-    # 3️⃣ TRUST BOX PLOT
+    # 3️⃣ BOX PLOT - TRUST RESPONSES
     # ==================================================
     if viz_option == "Trust Box Plot":
-        plot_box(df, selected_trust_items, "Trust Item Response Distribution")
+        trust_long = df[trust_items].melt(var_name='Trust Item', value_name='Response')
+        fig3 = px.box(trust_long, x='Trust Item', y='Response', points='all', title='Trust Item Response Distribution')
+        st.plotly_chart(fig3, use_container_width=True)
+    
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        with st.expander("📌 Key Insights - Trust Box Plot"):
+            st.markdown("""
+            <ul style="margin-left:15px;">
+                <li>Most trust items have median responses between 3 and 4, indicating overall positive trust among respondents.</li>
+                <li>Product variety shows a slightly higher median and wider spread, suggesting generally favorable perceptions.</li>
+                <li>Trust in honesty and accuracy is relatively consistent, with fewer extreme values.</li>
+                <li>Respondents tend to agree with trust statements, although variation exists across different dimensions.</li>
+            </ul>
+            """, unsafe_allow_html=True)
 
     # ==================================================
-    # 4️⃣ MOTIVATION BAR CHART
+    # 4️⃣ BAR CHART - MOTIVATION ITEMS
     # ==================================================
     if viz_option == "Motivation Bar Chart":
-        plot_bar(df, motivation_items, "Average Motivation Scores")
+        mot_means = df[motivation_items].mean().reset_index()
+        mot_means.columns = ['Motivation Item', 'Mean Score']
+        fig4 = px.bar(mot_means, x='Motivation Item', y='Mean Score', title="Average Motivation Scores")
+        st.plotly_chart(fig4, use_container_width=True)
+    
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        with st.expander("📌 Key Insights - Motivation Bar Chart"):
+            st.markdown("""
+            <ul style="margin-left:15px;">
+                <li>Discounts and promotions are the strongest motivator, standing out as the main driver of customer interest.</li>
+                <li>Gifts also play a meaningful role, showing that added value beyond the core product resonates with customers.</li>
+                <li>Relaxation and stress reduction score slightly lower, indicating moderate motivation rather than disinterest.</li>
+                <li>Customers appear more motivated by tangible incentives than emotional or lifestyle benefits.</li>
+            </ul>
+            """, unsafe_allow_html=True)
 
     # ==================================================
-    # 5️⃣ SCATTER PLOT
+    # 5️⃣ SCATTER PLOT -TRUST vs MOTIVATION
     # ==================================================
     if viz_option == "Trust vs Motivation Scatter":
         show_trendline = st.checkbox("Show Trend Line", value=True)
-        color_col = 'gender' if 'gender' in df.columns else None
-
-        fig = px.scatter(
+    
+        fig5 = px.scatter(
             df,
             x='Trust_Score',
             y='Motivation_Score',
-            color=color_col,
             labels={'Trust_Score': 'Trust Score', 'Motivation_Score': 'Motivation Score'},
             title='Trust vs Motivation'
         )
-
+    
         if show_trendline:
             x = df['Trust_Score'].values
             y = df['Motivation_Score'].values
             m, b = np.polyfit(x, y, 1)
             x_line = np.linspace(x.min(), x.max(), 100)
             y_line = m * x_line + b
-            fig.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
-
-        st.plotly_chart(fig, use_container_width=True)
+            fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
+    
+        st.plotly_chart(fig5, use_container_width=True)
+    
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        with st.expander("📌 Key Insights - Trust vs Motivation Scatter"):
+            st.markdown("""
+            <ul style="margin-left:15px;">
+                <li>The scatter plot shows a positive relationship between trust and motivation; higher trust generally corresponds to higher motivation.</li>
+                <li>The upward trend line indicates motivation increases steadily as trust improves.</li>
+                <li>Some variation exists at similar trust levels, but the overall pattern is consistent.</li>
+                <li>This suggests that trust plays a supportive role in enhancing consumer motivation on TikTok Shop.</li>
+            </ul>
+            """, unsafe_allow_html=True)
 
     # ==================================================
     # 6️⃣ RADAR CHART - INTERACTIVE
     # ==================================================
     if viz_option == "Trust Radar Chart":
-        radar_df = pd.DataFrame({
-            'Trust Item': selected_trust_items,
-            'Average Score': df[selected_trust_items].mean().values
-        })
-        radar_df = pd.concat([radar_df, radar_df.iloc[[0]]], ignore_index=True)
-
-        fig_radar = px.line_polar(
-            radar_df,
-            r='Average Score',
-            theta='Trust Item',
-            line_close=True,
-            markers=True,
-            title="Interactive Radar Chart of Trust Dimensions",
-            hover_name='Trust Item',
-            hover_data={'Average Score': True}
-        )
-        fig_radar.update_traces(fill='toself')
-        fig_radar.update_layout(
-            polar=dict(
-                radialaxis=dict(range=[0, 5], visible=True, tickvals=[1,2,3,4,5])
-            ),
-            showlegend=False
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
-
-        # Automated key insights
-        with st.expander("📌 Key Insights"):
-            for i, row in radar_df.iloc[:-1].iterrows():
-                score = row['Average Score']
-                item = row['Trust Item']
-                if score > 4:
-                    st.markdown(f"- **{item}** is very high ({score:.2f})")
-                elif score < 3:
-                    st.markdown(f"- **{item}** is relatively low ({score:.2f})")
-                else:
-                    st.markdown(f"- **{item}** is moderate ({score:.2f})")
+        labels = selected_trust_items
+        values = df[selected_trust_items].mean().tolist()
+        values += values[:1]  # complete loop
+        angles = np.linspace(0, 2 * np.pi, len(labels)+1)
+    
+        fig6, ax = plt.subplots(figsize=(5,5), subplot_kw=dict(polar=True))
+        ax.plot(angles, values, linewidth=2)
+        ax.fill(angles, values, alpha=0.25)
+        ax.set_thetagrids(angles[:-1] * 180/np.pi, labels)
+        st.pyplot(fig6)
+    
+        # -------------------------
+        # INTERPRETATION / INSIGHTS
+        # -------------------------
+        with st.expander("📌 Key Insights - Trust Radar Chart"):
+            st.markdown("""
+            <ul style="margin-left:15px;">
+                <li>Overall, trust levels are strong across all dimensions, with no area showing serious weakness.</li>
+                <li>Customers feel most confident that product variety meets their needs and quality matches the description, showing expectations are largely met.</li>
+                <li>Trust in honesty and reliability is high, reflecting positive perceptions of seller integrity.</li>
+                <li>The slightly lower score on "no risk" suggests some customers may still feel cautious, leaving room to strengthen reassurance and transparency.</li>
+            </ul>
+            """, unsafe_allow_html=True)
