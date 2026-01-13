@@ -68,6 +68,13 @@ def app():
         'motivated_by_gifts'
     ]
 
+    
+    # ==================================================
+    # INITIALIZE TRUST ITEM SELECTION FOR SAFETY
+    # ==================================================
+    selected_trust_items = trust_items.copy()
+
+
     # ==================================================
     # CREATE COMPOSITE SCORES
     # ==================================================
