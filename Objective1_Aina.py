@@ -59,7 +59,7 @@ def app():
     col_m1, col_m2, col_m3 = st.columns(3)
     col_m1.metric("Total Sample", total_respondents)
     col_m2.metric(f"Filtered ({selected_age})", filtered_n)
-    col_m3.metric("Platform Usage", f"{usage_rate:.1f}%")
+    
 
     st.info(f"**Quick Insight:** 💡 Out of **{total_respondents}** participants, **{usage_rate:.1f}%** have experience using TikTok Shop. You are currently analyzing the **{selected_age}** demographic segment.")
 
