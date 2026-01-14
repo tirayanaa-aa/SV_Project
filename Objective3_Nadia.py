@@ -292,12 +292,15 @@ def app():
     if viz_option == "Trust vs Motivation Scatter":
         show_trendline = st.checkbox("Show Trend Line", value=True)
     
+        # Scatter plot with gender coloring
         fig5 = px.scatter(
             df,
             x='Trust_Score',
             y='Motivation_Score',
-            labels={'Trust_Score': 'Trust Score', 'Motivation_Score': 'Motivation Score'},
-            title='Trust vs Motivation'
+            color='gender',  # color dots by gender
+            labels={'Trust_Score': 'Trust Score', 'Motivation_Score': 'Motivation Score', 'gender': 'Gender'},
+            title='Trust vs Motivation by Gender',
+            color_discrete_map={'Male': 'blue', 'Female': 'red'}  # optional: set custom colors
         )
     
         if show_trendline:
@@ -319,9 +322,11 @@ def app():
                 <li>The scatter plot shows a positive relationship between trust and motivation; higher trust generally corresponds to higher motivation.</li>
                 <li>The upward trend line indicates motivation increases steadily as trust improves.</li>
                 <li>Some variation exists at similar trust levels, but the overall pattern is consistent.</li>
+                <li>The plot highlights differences between male and female respondents, showing trends for each group.</li>
                 <li>This suggests that trust plays a supportive role in enhancing consumer motivation on TikTok Shop.</li>
             </ul>
             """, unsafe_allow_html=True)
+
 
     # ==================================================
     # 6️⃣ RADAR CHART - INTERACTIVE
