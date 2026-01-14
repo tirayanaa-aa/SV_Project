@@ -115,10 +115,6 @@ def app():
             label="Average Motivation Score",
             value=f"{df['Motivation_Score'].mean():.2f}"
         )
-
-
-        summary_df = df[metric_cols].agg(['mean','min','max']).T.round(2)
-        st.dataframe(summary_df.style.background_gradient(cmap='Blues'), height=200)
     else:
         st.warning(f"Missing columns for summary metrics: {missing_cols}")
 
