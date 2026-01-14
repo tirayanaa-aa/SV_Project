@@ -5,41 +5,38 @@ import plotly.express as px
 def app():
     st.subheader("Impulse Buying Analysis")
 
-    
-   # ==================================================
-   # SUB-OBJECTIVE & CONTEXT (Point Style)
-   # ==================================================
-   st.markdown("## Sub-Objective 4: Product Presentation, Lifestyle, & Impulse Buying")
+  # ==================================================
+  # SUB-OBJECTIVE & CONTEXT (Point Style)
+  # ==================================================
+  st.markdown("## Sub-Objective 4: Product Presentation, Lifestyle, & Impulse Buying")
 
-   # Create a container for the “box” look
-   with st.container():
-       st.markdown(
-           """
-           <div style="border:1px solid #cccccc; padding:15px; border-radius:10px; background-color:#f9f9f9;">
-           <h4>Objective</h4>
-           <ul>
-               <li>Examine how <b>product appearance</b> influences impulse buying on TikTok Shop</li>
-               <li>Analyze the impact of <b>personal shopping lifestyle</b> on spontaneous purchases</li>
-               <li>Assess the relationship between <b>impulse buying tendencies</b> and actual purchase behavior</li>
-           </ul>
-        
-           <h4>Problem Statement</h4>
-           <ul>
-               <li>Impulse buying is significant in social commerce platforms</li>
-               <li>The influence of product presentation and shopping lifestyle is not fully understood</li>
-               <li>Visual analytics can uncover hidden patterns and relationships</li>
-           </ul>
+  with st.container():
+     st.markdown(
+        """
+        <div style="border:1px solid #cccccc; padding:15px; border-radius:10px; background-color:#f9f9f9;">
+        <h4>Objective</h4>
+        <ul>
+            <li>Examine how <b>product appearance</b> influences impulse buying on TikTok Shop</li>
+            <li>Analyze the impact of <b>personal shopping lifestyle</b> on spontaneous purchases</li>
+            <li>Assess the relationship between <b>impulse buying tendencies</b> and actual purchase behavior</li>
+        </ul>
 
-           <h4>Relevant Questionnaire Sections</h4>
-           <ul>
-               <li>Section 7: Personal Shopping Lifestyle (SL)</li>
-               <li>Section 8: Product Appearance and Description (PP)</li>
-               <li>Section 9: Impulse Buying Behavior (OIB)</li>
-           </ul>
-           </div>
-           """, unsafe_allow_html=True
-      )
+        <h4>Problem Statement</h4>
+        <ul>
+            <li>Impulse buying is significant in social commerce platforms</li>
+            <li>The influence of product presentation and shopping lifestyle is not fully understood</li>
+            <li>Visual analytics can uncover hidden patterns and relationships</li>
+        </ul>
 
+        <h4>Relevant Questionnaire Sections</h4>
+        <ul>
+            <li>Section 7: Personal Shopping Lifestyle (SL)</li>
+            <li>Section 8: Product Appearance and Description (PP)</li>
+            <li>Section 9: Impulse Buying Behavior (OIB)</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True
+    )
     
     # --------------------------------------------------
     # Load dataset
