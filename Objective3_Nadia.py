@@ -291,18 +291,21 @@ def app():
     # ==================================================
     if viz_option == "Trust vs Motivation Scatter":
         show_trendline = st.checkbox("Show Trend Line", value=True)
-    
-        # Sample 99 respondents for the scatter plot
-        df_sample = df.sample(n=99, random_state=42) if len(df) > 99 else df
-    
+        
+        # Sample 99 respondents for display
+        if len(df) > 99:
+            df_sample = df.sample(n=99, random_state=42)
+        else:
+            df_sample = df.copy()
+        
         fig5 = px.scatter(
             df_sample,
             x='Trust_Score',
             y='Motivation_Score',
             labels={'Trust_Score': 'Trust Score', 'Motivation_Score': 'Motivation Score'},
-            title='Trust vs Motivation (Sample of 99 respondents)'
+            title='Trust vs Motivation'
         )
-    
+        
         if show_trendline:
             x = df_sample['Trust_Score'].values
             y = df_sample['Motivation_Score'].values
@@ -310,9 +313,9 @@ def app():
             x_line = np.linspace(x.min(), x.max(), 100)
             y_line = m * x_line + b
             fig5.add_scatter(x=x_line, y=y_line, mode='lines', name='Trend Line')
-    
+        
         st.plotly_chart(fig5, use_container_width=True)
-    
+        
         # -------------------------
         # INTERPRETATION / INSIGHTS
         # -------------------------
@@ -325,6 +328,7 @@ def app():
                 <li>This suggests that trust plays a supportive role in enhancing consumer motivation on TikTok Shop.</li>
             </ul>
             """, unsafe_allow_html=True)
+
 
 
     # ==================================================
