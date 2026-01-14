@@ -29,29 +29,58 @@ def app():
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
     # ==================================================
-    # 1. Correlation Heatmap
+    # 1. Scatter Plot
     # ==================================================
-    correlation_data = df[['Scarcity', 'Serendipity']]
-    correlation_matrix = correlation_data.corr()
+    st.subheader("Scarcity vs Serendipity Quadrant Analysis")
 
-    fig = px.imshow(
-        correlation_matrix,
-        text_auto=".2f",
-        color_continuous_scale="RdBu",
-        zmin=-1,
-        zmax=1,
-        title="Correlation Heatmap Between Scarcity and Serendipity Scores"
-    )
+x_col = 'Scarcity'
+y_col = 'Serendipity'
+color_col = 'impulse_purchase'
 
-    fig.update_layout(height=450)
-    st.plotly_chart(fig, use_container_width=True)
+mean_x = df[x_col].mean()
+mean_y = df[y_col].mean()
 
-    st.write("""
-    **Interpretation:**  
-    - The heatmap shows a moderate positive correlation (r = 0.55) between scarcity and serendipity.
-    - Scarcity cues increase product exploration and unexpected discovery.
-    - The moderate strength indicates both factors also act independently in influencing shopping behaviour.
-    """)
+fig = px.scatter(
+    df,
+    x=x_col,
+    y=y_col,
+    color=color_col,
+    color_continuous_scale='Viridis',
+    opacity=0.7,
+    title="Scarcity vs Serendipity with Impulse Purchase Quadrants"
+)
+
+fig.add_vline(
+    x=mean_x,
+    line_dash="dash",
+    line_color="gray",
+    annotation_text=f"Mean Scarcity ({mean_x:.2f})",
+    annotation_position="top"
+)
+
+fig.add_hline(
+    y=mean_y,
+    line_dash="dash",
+    line_color="gray",
+    annotation_text=f"Mean Serendipity ({mean_y:.2f})",
+    annotation_position="right"
+)
+
+fig.update_layout(
+    height=500,
+    xaxis_title="Scarcity Score",
+    yaxis_title="Serendipity Score",
+    template="plotly_white"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.write("""
+**Interpretation:**  
+- The dashed vertical and horizontal lines represent the mean scarcity (3.68) and mean serendipity (3.85) values, dividing the data into four behavioral quadrants.
+- Impulse buying behavior is strongest when both scarcity and serendipity are high.
+- Both factors individually influence impulse buying, but their combined effect is significantly stronger.
+""")
 
     # ==================================================
     # 2. Monthly Income vs Scores
