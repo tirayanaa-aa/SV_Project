@@ -149,25 +149,47 @@ def app():
     # ==================================================
     if viz_option == "Correlation Heatmap":
         corr_items = trust_items + motivation_items
-        missing_corr = [c for c in corr_items if c not in df.columns]
+        corr = df[corr_items].corr()
 
-        if not missing_corr:
-            corr = df[corr_items].corr()
-            fig = px.imshow(
-                corr,
-                text_auto='.2f',
-                zmin=-1,
-                zmax=1,
-                color_continuous_scale='RdBu',
-                title='Correlation Matrix of Trust & Motivation Items'
+        fig = px.imshow(
+            corr,
+            text_auto='.2f',
+            zmin=-1,
+            zmax=1,
+            color_continuous_scale='RdBu',
+            title='Correlation Matrix of Trust & Motivation Items'
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # -------- IMPROVED STRONG CORRELATION TABLE --------
+        corr_long = corr.reset_index().melt(
+            id_vars='index',
+            var_name='Variable 2',
+            value_name='Correlation'
+        )
+        corr_long.rename(columns={'index': 'Variable 1'}, inplace=True)
+
+        strong_corr = corr_long[
+            (corr_long['Correlation'].abs() > 0.7) &
+            (corr_long['Correlation'].abs() < 1)
+        ]
+
+        strong_corr['Pair'] = strong_corr.apply(
+            lambda row: '-'.join(sorted([row['Variable 1'], row['Variable 2']])),
+            axis=1
+        )
+        strong_corr = strong_corr.drop_duplicates(subset='Pair').drop(columns='Pair')
+
+        if not strong_corr.empty:
+            st.markdown("**Strong correlations (>|0.7|):**")
+            st.dataframe(
+                strong_corr[['Variable 1', 'Variable 2', 'Correlation']]
+                .round(2)
+                .sort_values(by='Correlation', ascending=False),
+                use_container_width=True
             )
-            st.plotly_chart(fig, use_container_width=True)
-
-            # Highlight strong correlations
-            strong_corr = corr[(corr.abs() > 0.7) & (corr.abs() < 1)]
-            if not strong_corr.empty:
-                st.markdown("**Strong correlations (>|0.7|):**")
-                st.dataframe(strong_corr)
+        else:
+            st.info("No strong correlations found above the selected threshold.")
 
 
             # -------------------------
