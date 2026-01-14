@@ -31,46 +31,41 @@ def app():
     # ==================================================
     # 1. Density Plot
     # ==================================================
-    
-# Ensure OIB_Category is created
-if 'OIB_Category' not in df.columns:
+    # Ensure OIB_Category is created
+
+   if 'OIB_Category' not in df.columns:
     mean_oib_score = df['OIB_score'].mean()
     df['OIB_Category'] = df['OIB_score'].apply(
         lambda x: 'High OIB' if x >= mean_oib_score else 'Low OIB'
     )
+       # Create subplots
+       fig = make_subplots(
+           rows=1,
+           cols=2,
+           subplot_titles=[
+               "Density Plot of Scarcity Score by OIB Category",
+               "Density Plot of Serendipity Score by OIB Category"
+           ]
+       )
+   # Scarcity density plot
+   fig1 = px.density_contour(
+       df,
+       x="Scarcity",
+       color="OIB_Category",
+       fill=True
+   )
 
-# Create subplots
-fig = make_subplots(
-    rows=1,
-    cols=2,
-    subplot_titles=[
-        "Density Plot of Scarcity Score by OIB Category",
-        "Density Plot of Serendipity Score by OIB Category"
-    ]
-)
-
-# Scarcity density plot
-fig1 = px.density_contour(
-    df,
-    x="Scarcity",
-    color="OIB_Category",
-    fill=True
-)
-
-for trace in fig1.data:
+   for trace in fig1.data:
     fig.add_trace(trace, row=1, col=1)
-
-# Serendipity density plot
-fig2 = px.density_contour(
-    df,
-    x="Serendipity",
-    color="OIB_Category",
-    fill=True
-)
-
+       # Serendipity density plot
+       fig2 = px.density_contour(
+           df,
+           x="Serendipity",
+           color="OIB_Category",
+           fill=True
+       )
 for trace in fig2.data:
     fig.add_trace(trace, row=1, col=2)
-
 # Update layout
 fig.update_layout(
     height=450,
