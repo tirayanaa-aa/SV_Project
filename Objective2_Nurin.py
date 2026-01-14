@@ -29,57 +29,68 @@ def app():
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
     # ==================================================
-    # 1. Scatter Plot
+    # 1. Density Plot
     # ==================================================
-    st.subheader("Scarcity vs Serendipity Quadrant Analysis")
-    x_col = 'Scarcity'
-    y_col = 'Serendipity'
-    color_col = 'impulse_purchase'
     
-    mean_x = df[x_col].mean()
-    mean_y = df[y_col].mean()
-    
-    fig = px.scatter(
+# Ensure OIB_Category is created
+if 'OIB_Category' not in df.columns:
+    mean_oib_score = df['OIB_score'].mean()
+    df['OIB_Category'] = df['OIB_score'].apply(
+        lambda x: 'High OIB' if x >= mean_oib_score else 'Low OIB'
+    )
+
+# Create subplots
+fig = make_subplots(
+    rows=1,
+    cols=2,
+    subplot_titles=[
+        "Density Plot of Scarcity Score by OIB Category",
+        "Density Plot of Serendipity Score by OIB Category"
+    ]
+)
+
+# Scarcity density plot
+fig1 = px.density_contour(
     df,
-    x=x_col,
-    y=y_col,
-    color=color_col,
-    color_continuous_scale='Viridis',
-    opacity=0.7,
-    title="Scarcity vs Serendipity with Impulse Purchase Quadrants"
-    )
-    
-    fig.add_vline(
-    x=mean_x,
-    line_dash="dash",
-    line_color="gray",
-    annotation_text=f"Mean Scarcity ({mean_x:.2f})",
-    annotation_position="top"
-    )
-    
-    fig.add_hline(
-    y=mean_y,
-    line_dash="dash",
-    line_color="gray",
-    annotation_text=f"Mean Serendipity ({mean_y:.2f})",
-    annotation_position="right"
-    )
-    
-    fig.update_layout(
-    height=500,
-    xaxis_title="Scarcity Score",
-    yaxis_title="Serendipity Score",
+    x="Scarcity",
+    color="OIB_Category",
+    fill=True
+)
+
+for trace in fig1.data:
+    fig.add_trace(trace, row=1, col=1)
+
+# Serendipity density plot
+fig2 = px.density_contour(
+    df,
+    x="Serendipity",
+    color="OIB_Category",
+    fill=True
+)
+
+for trace in fig2.data:
+    fig.add_trace(trace, row=1, col=2)
+
+# Update layout
+fig.update_layout(
+    height=450,
+    title_text="Density Distributions of Scarcity and Serendipity by OIB Category",
+    showlegend=True,
     template="plotly_white"
-    
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
+)
+
+fig.update_xaxes(title_text="Scarcity Score", row=1, col=1)
+fig.update_xaxes(title_text="Serendipity Score", row=1, col=2)
+fig.update_yaxes(title_text="Density", row=1, col=1)
+fig.update_yaxes(title_text="Density", row=1, col=2)
+
+fig.show()
     
     st.write("""
     **Interpretation:**  
-    - The dashed vertical and horizontal lines represent the mean scarcity (3.68) and mean serendipity (3.85) values, dividing the data into four behavioral quadrants.
-    - Impulse buying behavior is strongest when both scarcity and serendipity are high.
-    - Both factors individually influence impulse buying, but their combined effect is significantly stronger.
+    - High OIB students are more sensitive to scarcity cues, with higher density at elevated scarcity scores, indicating urgency strongly drives their impulse buying.
+    - Serendipity also plays a key role, as High OIB individuals cluster at higher serendipity scores, showing that unexpected discovery amplifies unplanned purchases.
+    - Combined effect: Both scarcity and serendipity jointly contribute to stronger impulse buying tendencies in the High OIB group.
     """)
 
     # ==================================================
