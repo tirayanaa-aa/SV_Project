@@ -100,7 +100,7 @@ def app():
     # ==================================================
     # SUMMARY METRICS
     # ==================================================
-    st.markdown("## 📊 Summary Metrics")
+    st.markdown("## 📈 Summary Metrics")
     metric_cols = ['Trust_Score', 'Motivation_Score']
     missing_cols = [c for c in metric_cols if c not in df.columns]
 
