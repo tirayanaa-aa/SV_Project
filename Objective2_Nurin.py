@@ -27,7 +27,7 @@ def app():
     df = pd.read_csv("tiktok_impulse_buying_cleaned.csv")
 
     # ==================================================
-    # 1. Density Plot
+    # 1. Density Plot (Corrected for Streamlit/Plotly)
     # ==================================================
     # Ensure OIB_Category is created
     if 'OIB_Category' not in df.columns:
@@ -47,32 +47,37 @@ def app():
     )
 
     # Scarcity density plot
-    fig1 = px.density_contour(
-        df,
-        x="Scarcity",
-        color="OIB_Category",
-        fill=True
-    )
-
-    for trace in fig1.data:
-        fig.add_trace(trace, row=1, col=1)
+    for category in df['OIB_Category'].unique():
+        subset = df[df['OIB_Category'] == category]
+        fig.add_trace(
+            go.Histogram(
+                x=subset['Scarcity'],
+                histnorm='probability density',
+                name=category,
+                opacity=0.6
+            ),
+            row=1, col=1
+        )
 
     # Serendipity density plot
-    fig2 = px.density_contour(
-        df,
-        x="Serendipity",
-        color="OIB_Category",
-        fill=True
-    )
-
-    for trace in fig2.data:
-        fig.add_trace(trace, row=1, col=2)
+    for category in df['OIB_Category'].unique():
+        subset = df[df['OIB_Category'] == category]
+        fig.add_trace(
+            go.Histogram(
+                x=subset['Serendipity'],
+                histnorm='probability density',
+                name=category,
+                opacity=0.6,
+                showlegend=False  # avoid duplicate legend
+            ),
+            row=1, col=2
+        )
 
     # Update layout
     fig.update_layout(
+        barmode='overlay',
         height=450,
         title_text="Density Distributions of Scarcity and Serendipity by OIB Category",
-        showlegend=True,
         template="plotly_white"
     )
 
